@@ -7,15 +7,15 @@
     tools:context=".PetitBac">
 
     <TextView
-        android:id="@+id/textTitlePetitBac"
+        android:id="@+id/textViewTitlePetitBac"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="9dp"
         android:fontFamily="serif"
-        android:text="@string/petit_bac_name"
+        android:text="@string/petit_bac_title"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,19 +24,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.016" />
 
-    <android.support.v7.widget.GridLayout
-        android:id="@+id/GridLayoutPetitBac"
-        android:layout_width="368dp"
-        android:layout_height="431dp"
+    <TableLayout
+        android:id="@+id/TableLayoutPetitBac"
+        android:layout_width="373dp"
+        android:layout_height="438dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitlePetitBac">
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitlePetitBac">
 
-    </android.support.v7.widget.GridLayout>
+        <TableRow
+            android:id="@+id/TableRowCategories"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>

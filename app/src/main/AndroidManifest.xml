@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".PetitBac" />
         <activity android:name=".MouvementGame" />
-        <activity android:name=".QuestionGame"></activity>
+        <activity android:name=".QuestionGame" />
+        <activity android:name=".EndActivity"></activity>
     </application>
 
 </manifest>
