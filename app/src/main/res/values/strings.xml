@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">JeuPromob</string>
+    <string name="button_play">Play</string>
+    <string name="petit_bac_name">Petit bac</string>
+    <string name="question_game_name">Répondez vite !</string>
+    <string name="beer_game_name">Servez bien la bière !</string>
+
+    <string-array name="questions">
+        <item>Quel est la couleur du cheval blanc d\'henri 4 ?</item>
+    </string-array>
 </resources>
