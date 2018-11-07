@@ -1,8 +1,10 @@
-package com.iot.jeupromob;
+package com.iot.jeupromob.activity;
 
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.iot.jeupromob.R;
 
 public class MainActivity extends AppCompatActivity implements PetitBacFragment.OnFragmentInteractionListener,
         BeerGameFragment.OnFragmentInteractionListener, QuizzGameFragment.OnFragmentInteractionListener,

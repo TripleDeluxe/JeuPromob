@@ -1,4 +1,4 @@
-package com.iot.jeupromob;
+package com.iot.jeupromob.util;
 
 public class Player {
     public String name = "";

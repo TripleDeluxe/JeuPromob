@@ -1,4 +1,4 @@
-package com.iot.jeupromob;
+package com.iot.jeupromob.activity;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,16 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.iot.jeupromob.util.GameManager;
+import com.iot.jeupromob.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EndFragment.OnFragmentInteractionListener} interface
+ * {@link BeerGameFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EndFragment#newInstance} factory method to
+ * Use the {@link BeerGameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EndFragment extends Fragment {
+public class BeerGameFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,9 +34,9 @@ public class EndFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private Button buttonReturn = null;
+    private Button buttonPassGame = null;
 
-    public EndFragment() {
+    public BeerGameFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +46,11 @@ public class EndFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment EndFragment.
+     * @return A new instance of fragment BeerGameFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EndFragment newInstance(String param1, String param2) {
-        EndFragment fragment = new EndFragment();
+    public static BeerGameFragment newInstance(String param1, String param2) {
+        BeerGameFragment fragment = new BeerGameFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,18 +71,18 @@ public class EndFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_end, container, false);
+        return inflater.inflate(R.layout.fragment_beer_game, container, false);
     }
 
     @Override
     public void onStart(){
         super.onStart();
 
-        buttonReturn = getView().findViewById(R.id.fragment_end_button_return);
-        buttonReturn.setOnClickListener(new View.OnClickListener() {
+        buttonPassGame = getView().findViewById(R.id.fragment_beer_game_pass_button);
+        buttonPassGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new GameMenuFragment()).commit();
+                GameManager.getInstance().nextGame((AppCompatActivity) getActivity());
             }
         });
     }

@@ -1,15 +1,16 @@
-package com.iot.jeupromob;
+package com.iot.jeupromob.util;
 
-import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import com.iot.jeupromob.R;
+import com.iot.jeupromob.activity.BeerGameFragment;
+import com.iot.jeupromob.activity.EndFragment;
+import com.iot.jeupromob.activity.PetitBacFragment;
+import com.iot.jeupromob.activity.QuizzGameFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class GameManager {
     public int nbPlayers = 1;

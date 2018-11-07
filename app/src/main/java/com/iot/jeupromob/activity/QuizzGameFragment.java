@@ -1,4 +1,4 @@
-package com.iot.jeupromob;
+package com.iot.jeupromob.activity;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,17 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.iot.jeupromob.util.GameManager;
+import com.iot.jeupromob.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PetitBacFragment.OnFragmentInteractionListener} interface
+ * {@link QuizzGameFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link PetitBacFragment#newInstance} factory method to
+ * Use the {@link QuizzGameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PetitBacFragment extends Fragment {
+public class QuizzGameFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,8 +36,9 @@ public class PetitBacFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private Button buttonPassGame = null;
+    private TextView textViewQuestion = null;
 
-    public PetitBacFragment() {
+    public QuizzGameFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +48,11 @@ public class PetitBacFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PetitBacFragment.
+     * @return A new instance of fragment QuizzGameFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PetitBacFragment newInstance(String param1, String param2) {
-        PetitBacFragment fragment = new PetitBacFragment();
+    public static QuizzGameFragment newInstance(String param1, String param2) {
+        QuizzGameFragment fragment = new QuizzGameFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,20 +73,22 @@ public class PetitBacFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_petit_bac, container, false);
+        return inflater.inflate(R.layout.fragment_quizz_game, container, false);
     }
 
     @Override
     public void onStart(){
         super.onStart();
-
-        buttonPassGame = getView().findViewById(R.id.fragment_petit_bac_pass_button2);
+        buttonPassGame = getView().findViewById(R.id.fragment_quizz_pass_button2);
         buttonPassGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GameManager.getInstance().nextGame((AppCompatActivity) getActivity());
             }
         });
+
+        textViewQuestion = getView().findViewById(R.id.fragment_quizz_text_view_question);
+        textViewQuestion.setText("");
     }
 
     // TODO: Rename method, update argument and hook method into UI event

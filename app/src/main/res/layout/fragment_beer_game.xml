@@ -5,7 +5,7 @@
     android:id="@+id/frameLayoutBeerGame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BeerGameFragment">
+    tools:context=".activity.BeerGameFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

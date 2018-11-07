@@ -1,4 +1,4 @@
-package com.iot.jeupromob;
+package com.iot.jeupromob.activity;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,16 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.iot.jeupromob.util.AsyncHTTPGetJSON;
+import com.iot.jeupromob.util.GameManager;
+import com.iot.jeupromob.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BeerGameFragment.OnFragmentInteractionListener} interface
+ * {@link PetitBacFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BeerGameFragment#newInstance} factory method to
+ * Use the {@link PetitBacFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BeerGameFragment extends Fragment {
+public class PetitBacFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,8 +37,12 @@ public class BeerGameFragment extends Fragment {
 
     private Button buttonPassGame = null;
 
-    public BeerGameFragment() {
+    public PetitBacFragment() {
         // Required empty public constructor
+    }
+
+    private void getCategories(){
+        AsyncHTTPGetJSON http = new AsyncHTTPGetJSON("");
     }
 
     /**
@@ -43,11 +51,11 @@ public class BeerGameFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BeerGameFragment.
+     * @return A new instance of fragment PetitBacFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BeerGameFragment newInstance(String param1, String param2) {
-        BeerGameFragment fragment = new BeerGameFragment();
+    public static PetitBacFragment newInstance(String param1, String param2) {
+        PetitBacFragment fragment = new PetitBacFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,14 +76,14 @@ public class BeerGameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_beer_game, container, false);
+        return inflater.inflate(R.layout.fragment_petit_bac, container, false);
     }
 
     @Override
     public void onStart(){
         super.onStart();
 
-        buttonPassGame = getView().findViewById(R.id.fragment_beer_game_pass_button);
+        buttonPassGame = getView().findViewById(R.id.fragment_petit_bac_pass_button2);
         buttonPassGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

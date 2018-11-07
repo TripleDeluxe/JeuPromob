@@ -5,7 +5,7 @@
     android:id="@+id/frameLayoutPetitBac"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PetitBacFragment">
+    tools:context=".activity.PetitBacFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <Button

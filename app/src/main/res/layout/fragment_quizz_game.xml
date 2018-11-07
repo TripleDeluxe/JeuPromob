@@ -5,7 +5,7 @@
     android:id="@+id/frameLayoutQuizzGame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuizzGameFragment">
+    tools:context=".activity.QuizzGameFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <Button
@@ -37,5 +37,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.016" />
+
+    <TextView
+        android:id="@+id/fragment_quizz_text_view_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="serif"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleQuestionGame2"
+        app:layout_constraintVertical_bias="0.072" />
 
 </android.support.constraint.ConstraintLayout>
