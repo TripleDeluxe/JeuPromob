@@ -19,7 +19,8 @@
         <activity android:name=".PetitBac" />
         <activity android:name=".MouvementGame" />
         <activity android:name=".QuestionGame" />
-        <activity android:name=".EndActivity"></activity>
+        <activity android:name=".EndActivity" />
+        <activity android:name=".MenuActivity"></activity>
     </application>
 
 </manifest>

@@ -27,7 +27,6 @@ public class Random {
             int random = randomInt(copy.size() - 1);
             result.add(copy.get(random));
             copy.remove(random);
-            Log.d("copy", "copy.size() : " + copy.size() + "");
         }
 
         return result;
@@ -39,7 +38,7 @@ public class Random {
         boolean isResultValid = false;
         int result = 0;
 
-        //On exclu les valeurs extrêmes de la range car elles ont 2 fois moins de chance de sortir que les autres
+        //On exclu les valeurs extrêmes de la range car elles ont 2 fois moins de chance de sortir que les autres (a cause de l'arrondi)
         while(!isResultValid){
             result = (int) Math.round(Math.random() * (range+2) );
             if(result == 0 || result == range + 2){

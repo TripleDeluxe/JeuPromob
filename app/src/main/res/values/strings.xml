@@ -5,8 +5,13 @@
     <string name="question_game_title">Répondez vite !</string>
     <string name="beer_game_title">Servez bien la bière !</string>
     <string name="end_title">Bien joué !</string>
+    <string name="button_pass_game">Passer le jeu</string>
+    <string name="button_return_menu">Retour</string>
 
     <string-array name="questions">
         <item>Quel est la couleur du cheval blanc d\'henri 4 ?</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

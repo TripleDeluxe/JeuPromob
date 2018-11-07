@@ -1,35 +1,29 @@
 package com.iot.jeupromob;
 
-import android.app.Activity;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.content.Intent;
-import java.util.ArrayList;
-import java.lang.Math;
-import java.util.Collection;
 
-public class MainActivity extends AppCompatActivity {
-    private Button mPlay;
+public class MainActivity extends AppCompatActivity implements PetitBacFragment.OnFragmentInteractionListener,
+        BeerGameFragment.OnFragmentInteractionListener, QuizzGameFragment.OnFragmentInteractionListener,
+        GameMenuFragment.OnFragmentInteractionListener, EndFragment.OnFragmentInteractionListener
+{
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPlay = findViewById(R.id.activity_main_button_play);
-        mPlay.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                GameManager.getInstance().start(MainActivity.this);
-            }
-        });
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new GameMenuFragment()).commit();
     }
 
     @Override
     protected void onStart(){
         super.onStart();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
