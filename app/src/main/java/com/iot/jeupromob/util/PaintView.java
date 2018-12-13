@@ -2,15 +2,13 @@ package com.iot.jeupromob.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.EmbossMaskFilter;
-import android.graphics.MaskFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -48,6 +46,7 @@ public class PaintView extends View {
     }
 
     public void init(DisplayMetrics metrics) {
+        Log.i("initfunc", "on est a initi");
         int height = metrics.heightPixels;
         int width = metrics.widthPixels;
 
