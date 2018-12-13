@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">JeuPromob</string>
     <string name="button_play">Play</string>
-    <string name="petit_bac_title">Petit bac</string>
-    <string name="question_game_title">Répondez vite !</string>
-    <string name="beer_game_title">Servez bien la bière !</string>
+    <string name="title_petit_bac">Petit bac</string>
+    <string name="title_question_game">Répondez vite</string>
+    <string name="title_beer_game">Servez bien la bière</string>
+    <string name="title_shape_game">Dessinez la forme</string>
     <string name="end_title">Bien joué !</string>
     <string name="button_pass_game">Passer le jeu</string>
     <string name="button_return_menu">Retour</string>
@@ -35,4 +36,7 @@
         <item>macron</item>
         <item>emmanuelmacron</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

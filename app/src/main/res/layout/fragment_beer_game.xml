@@ -17,7 +17,7 @@
         android:layout_marginEnd="7dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="serif"
-        android:text="@string/beer_game_title"
+        android:text="@string/title_beer_game"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

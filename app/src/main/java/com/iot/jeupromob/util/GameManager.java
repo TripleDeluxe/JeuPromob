@@ -8,6 +8,7 @@ import com.iot.jeupromob.activity.BeerGameFragment;
 import com.iot.jeupromob.activity.EndFragment;
 import com.iot.jeupromob.activity.PetitBacFragment;
 import com.iot.jeupromob.activity.QuizzGameFragment;
+import com.iot.jeupromob.activity.ShapeGameFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +48,8 @@ public class GameManager {
         gamesFragment = new Fragment[]{
                 new PetitBacFragment(),
                 new QuizzGameFragment(),
-                new BeerGameFragment()
+                new BeerGameFragment(),
+                new ShapeGameFragment()
         };
         gamesOrder = Random.shuffleArrayList(new ArrayList<Fragment>(Arrays.asList(gamesFragment)));
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, gamesOrder.get(0)).commit();
