@@ -1,6 +1,7 @@
 package com.iot.jeupromob.activity;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -66,6 +67,9 @@ public class GameMenuFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        //Volume du son
+        getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        getResources().getResourceName(R.raw.bonne_reponse);
     }
 
     @Override

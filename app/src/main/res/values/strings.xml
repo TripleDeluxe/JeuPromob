@@ -7,11 +7,32 @@
     <string name="end_title">Bien joué !</string>
     <string name="button_pass_game">Passer le jeu</string>
     <string name="button_return_menu">Retour</string>
+    <string name="quizz_hint">Réponse</string>
+    <string name="quizz_button_submit">Valider</string>
 
+    <!--Les réponses seront mises en majuscule, auront les espaces effacés pour prévenir les fautes de frappes-->
+    <string name="quizz_result_true">Correct !</string>
+    <string name="quizz_result_false">Incorrect !</string>
     <string-array name="questions">
         <item>Quel est la couleur du cheval blanc d\'henri 4 ?</item>
+        <item>Dans une course de voiture, je suis 3ème, si je dépasse le 2ème, qu\'elle-est ma position ?</item>
+        <item>Quel-est l\'actuel président de la France ?</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="answers_1">
+        <item>blanc</item>
+    </string-array>
+
+    <string-array name="answers_2">
+        <item>2</item>
+        <item>2ème</item>
+        <item>2eme</item>
+        <item>deuxieme</item>
+        <item>deuxième</item>
+    </string-array>
+
+    <string-array name="answers_3">
+        <item>macron</item>
+        <item>emmanuelmacron</item>
+    </string-array>
 </resources>

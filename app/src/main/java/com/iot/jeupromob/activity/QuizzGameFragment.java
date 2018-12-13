@@ -1,10 +1,17 @@
 package com.iot.jeupromob.activity;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.Resources;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +20,10 @@ import android.widget.TextView;
 
 import com.iot.jeupromob.util.GameManager;
 import com.iot.jeupromob.R;
+import com.iot.jeupromob.util.Random;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -35,11 +46,95 @@ public class QuizzGameFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private MediaPlayer soundGoodAnswer = null;
+    private MediaPlayer soundBadAnswer = null;
+    private MediaPlayer[] sounds = new MediaPlayer[]{soundGoodAnswer, soundBadAnswer};
+
     private Button buttonPassGame = null;
+    private Button buttonSubmit = null;
     private TextView textViewQuestion = null;
+    private TextInputEditText textInput = null;
+
+    private int nbQuestions = 2;
+    private Question[] questions = new Question[nbQuestions];
+    //Nécessaire d'initialiser à -1 (cf setNextQuestion() )
+    private int currentQuestionIndex = -1;
+    //answers[i] = toutes les réponses possibles de questions[i]
+    private ArrayList<String[]> answers = new ArrayList<String[]>();
+
+    private class Question{
+        public String question;
+        public int questionIndex;
+        public Question(String question, int questionIndex){
+            this.question = question;
+            this.questionIndex = questionIndex;
+        }
+    }
 
     public QuizzGameFragment() {
         // Required empty public constructor
+    }
+
+    private void getAnswers(){
+        answers.add(getResources().getStringArray(R.array.answers_1));
+        answers.add(getResources().getStringArray(R.array.answers_2));
+        answers.add(getResources().getStringArray(R.array.answers_3));
+    }
+
+    //Initialise l'Array questions avec un nombre nbQuestions de questions aléatoires et affiche la première question
+    private void setQuestions(){
+        ArrayList<Integer> lastQuestionsIndex = new ArrayList<Integer>();
+        String[] stringQuestions = getResources().getStringArray(R.array.questions);
+
+        for(int i=0; i < nbQuestions; i++){
+            //On initialise une nouvelle question aléatoire qui n'a pas déjà été choisie
+            int randomIndex = Random.randomInt(stringQuestions.length - 1);
+            boolean isQuestionValid = true;
+            do{
+                for(int j=0; j < lastQuestionsIndex.size(); j++){
+                    if(lastQuestionsIndex.get(i) == randomIndex){
+                        isQuestionValid = false;
+                    }
+                }
+            }while (!isQuestionValid);
+
+            questions[i] = new Question(stringQuestions[randomIndex], randomIndex);
+        }
+
+        setNextQuestion();
+    }
+
+    private void setNextQuestion(){
+        currentQuestionIndex++;
+        if(currentQuestionIndex < nbQuestions){
+            textInput.setText(getResources().getString(R.string.quizz_hint));
+            textViewQuestion.setText(questions[currentQuestionIndex].question);
+        }else{
+            GameManager.getInstance().nextGame((AppCompatActivity) getActivity());
+        }
+    }
+
+    private void checkAnswer(){
+        String answer = textInput.getText().toString();
+        Log.d("answer", answer + "t");
+        String[] questionAnswers = answers.get(questions[currentQuestionIndex].questionIndex);
+        Log.d("answers", questionAnswers[0] + "t");
+        boolean isAnswerValid = false;
+
+//        Vérification de la réponse
+        for(int i=0; i < questionAnswers.length; i++){
+            if(answer.equals(questionAnswers[i])){
+                isAnswerValid = true;
+            }
+        }
+
+        if(isAnswerValid){
+            soundGoodAnswer.start();
+        }else{
+            soundBadAnswer.start();
+        }
+
+        setNextQuestion();
     }
 
     /**
@@ -67,6 +162,9 @@ public class QuizzGameFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        soundGoodAnswer = MediaPlayer.create(getContext(), R.raw.bonne_reponse);
+        soundBadAnswer = MediaPlayer.create(getContext(), R.raw.mauvaise_reponse);
     }
 
     @Override
@@ -79,6 +177,14 @@ public class QuizzGameFragment extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
+
+        buttonSubmit = getView().findViewById(R.id.fragment_quizz_button_submit);
+        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswer();
+            }
+        });
         buttonPassGame = getView().findViewById(R.id.fragment_quizz_pass_button2);
         buttonPassGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +194,10 @@ public class QuizzGameFragment extends Fragment {
         });
 
         textViewQuestion = getView().findViewById(R.id.fragment_quizz_text_view_question);
-        textViewQuestion.setText("");
+        textInput = getView().findViewById(R.id.fragment_quizz_text_input);
+
+        getAnswers();
+        setQuestions();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -113,6 +222,14 @@ public class QuizzGameFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
+        //On libère les MediaPlayer des bruitages
+        for(int i=0; i < sounds.length; i++){
+            if(sounds[i] != null){
+                sounds[i].release();
+                sounds[i] = null;
+            }
+        }
     }
 
     /**
