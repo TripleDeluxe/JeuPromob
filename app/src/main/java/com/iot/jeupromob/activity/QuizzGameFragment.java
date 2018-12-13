@@ -24,6 +24,8 @@ import com.iot.jeupromob.util.Random;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -56,7 +58,8 @@ public class QuizzGameFragment extends Fragment {
     private TextInputEditText textInput = null;
 
     private int nbQuestions = 2;
-    private Question[] questions = new Question[nbQuestions];
+    private ArrayList<Question> mRandomQuestions = null;
+
     //Nécessaire d'initialiser à -1 (cf setNextQuestion() )
     private int currentQuestionIndex = -1;
     //answers[i] = toutes les réponses possibles de questions[i]
@@ -81,24 +84,22 @@ public class QuizzGameFragment extends Fragment {
         answers.add(getResources().getStringArray(R.array.answers_3));
     }
 
-    //Initialise l'Array questions avec un nombre nbQuestions de questions aléatoires et affiche la première question
+    //Initialise l'Array mRandomQuestions avec un nombre nbQuestions de questions aléatoires et affiche la première question
     private void setQuestions(){
-        ArrayList<Integer> lastQuestionsIndex = new ArrayList<Integer>();
-        String[] stringQuestions = getResources().getStringArray(R.array.questions);
+        //On copy le tableau Questions dans une arrayList
+        String[] mQuestions = getResources().getStringArray(R.array.questions);
+        ArrayList<String> mQuestionsArrayList = new ArrayList<>();
+        for(int i=0; i<mQuestions.length; i++){
+            mQuestionsArrayList.add(mQuestions[i]);
+        }
+
+        //On créer le tableau de question aléatoire a partir de mQuestionsArrayList
+        mRandomQuestions = new ArrayList<Question>();
 
         for(int i=0; i < nbQuestions; i++){
-            //On initialise une nouvelle question aléatoire qui n'a pas déjà été choisie
-            int randomIndex = Random.randomInt(stringQuestions.length - 1);
-            boolean isQuestionValid = true;
-            do{
-                for(int j=0; j < lastQuestionsIndex.size(); j++){
-                    if(lastQuestionsIndex.get(i) == randomIndex){
-                        isQuestionValid = false;
-                    }
-                }
-            }while (!isQuestionValid);
-
-            questions[i] = new Question(stringQuestions[randomIndex], randomIndex);
+            int randomIndex = Random.randomInt(mQuestionsArrayList.size() - 1);
+            mRandomQuestions.add(new Question(mQuestionsArrayList.get(randomIndex), randomIndex));
+            mQuestionsArrayList.remove(randomIndex);
         }
 
         setNextQuestion();
@@ -107,34 +108,45 @@ public class QuizzGameFragment extends Fragment {
     private void setNextQuestion(){
         currentQuestionIndex++;
         if(currentQuestionIndex < nbQuestions){
-            textInput.setText(getResources().getString(R.string.quizz_hint));
-            textViewQuestion.setText(questions[currentQuestionIndex].question);
+            textInput.setText("");
+            textViewQuestion.setText(mRandomQuestions.get(currentQuestionIndex).question);
         }else{
             GameManager.getInstance().nextGame((AppCompatActivity) getActivity());
         }
     }
 
     private void checkAnswer(){
-        String answer = textInput.getText().toString();
-        Log.d("answer", answer + "t");
-        String[] questionAnswers = answers.get(questions[currentQuestionIndex].questionIndex);
-        Log.d("answers", questionAnswers[0] + "t");
+        String answer = textInput.getText().toString().toUpperCase().replaceAll("\\s","");
+        String[] questionAnswers = answers.get(mRandomQuestions.get(currentQuestionIndex).questionIndex);
         boolean isAnswerValid = false;
 
 //        Vérification de la réponse
         for(int i=0; i < questionAnswers.length; i++){
-            if(answer.equals(questionAnswers[i])){
+
+            if(answer.equals(questionAnswers[i].toUpperCase().replaceAll("\\s",""))){
                 isAnswerValid = true;
             }
         }
 
         if(isAnswerValid){
             soundGoodAnswer.start();
+            soundGoodAnswer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    setNextQuestion();
+                }
+            });
         }else{
             soundBadAnswer.start();
+            soundBadAnswer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    setNextQuestion();
+                }
+            });
         }
 
-        setNextQuestion();
+
     }
 
     /**

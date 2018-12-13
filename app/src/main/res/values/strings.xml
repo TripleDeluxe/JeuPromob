@@ -8,10 +8,9 @@
     <string name="end_title">Bien joué !</string>
     <string name="button_pass_game">Passer le jeu</string>
     <string name="button_return_menu">Retour</string>
-    <string name="quizz_hint">Réponse</string>
     <string name="quizz_button_submit">Valider</string>
 
-    <!--Les réponses seront mises en majuscule, auront les espaces effacés pour prévenir les fautes de frappes-->
+    <!--Les réponses seront mises en majuscule, auront les espaces effacés -->
     <string name="quizz_result_true">Correct !</string>
     <string name="quizz_result_false">Incorrect !</string>
     <string-array name="questions">

@@ -46,7 +46,6 @@ public class PaintView extends View {
     }
 
     public void init(DisplayMetrics metrics) {
-        Log.i("initfunc", "on est a initi");
         int height = metrics.heightPixels;
         int width = metrics.widthPixels;
 
