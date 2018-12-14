@@ -16,14 +16,6 @@ import com.iot.jeupromob.util.GameManager;
 import com.iot.jeupromob.R;
 
 public class GameMenuFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private Button mPlaySoloButton = null;
     private Button mPlayMultiButton = null;
@@ -31,19 +23,6 @@ public class GameMenuFragment extends Fragment {
 
     public GameMenuFragment() {
         // Required empty public constructor
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        //Volume du son
-        getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        getResources().getResourceName(R.raw.bonne_reponse);
     }
 
     @Override

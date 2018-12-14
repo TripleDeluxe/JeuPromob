@@ -12,10 +12,7 @@ import android.os.Bundle;
 import com.iot.jeupromob.R;
 import com.iot.jeupromob.util.WifiP2PBroadcastReceiver;
 
-public class MainActivity extends AppCompatActivity implements PetitBacFragment.OnFragmentInteractionListener,
-        BeerGameFragment.OnFragmentInteractionListener, QuizzGameFragment.OnFragmentInteractionListener,
-        GameMenuFragment.OnFragmentInteractionListener, EndFragment.OnFragmentInteractionListener
-{
+public class MainActivity extends AppCompatActivity {
     //Listener pour les events P2P
     private final IntentFilter mIntentFilter = new IntentFilter();
     private WifiP2pManager.Channel mChannel;
@@ -72,10 +69,5 @@ public class MainActivity extends AppCompatActivity implements PetitBacFragment.
     public void onPause() {
         super.onPause();
         unregisterReceiver(mWifiP2PReceiver);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }
