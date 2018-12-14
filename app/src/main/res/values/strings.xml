@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">JeuPromob</string>
-    <string name="button_play">Play</string>
+    <string name="button_play_solo">Jouer en solo</string>
+    <string name="button_play_multi">Jouer en multijoueur</string>
+    <string name="button_play_training">Entraînement</string>
     <string name="title_petit_bac">Petit bac</string>
     <string name="title_question_game">Répondez vite</string>
     <string name="title_beer_game">Servez bien la bière</string>
