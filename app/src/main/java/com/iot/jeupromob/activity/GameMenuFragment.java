@@ -38,11 +38,11 @@ public class GameMenuFragment extends Fragment {
         super.onStart();
 
         //On récupère les boutons de l'UI
-        mPlaySoloButton = getActivity().findViewById(R.id.fragment_menu_button_play);
+        mPlaySoloButton = getActivity().findViewById(R.id.fragment_menu_button_play_solo);
         mPlaySoloButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                GameManager.getInstance().start((AppCompatActivity) getActivity());
+                GameManager.getInstance().startSoloGame((AppCompatActivity) getActivity());
             }
         });
         mPlayMultiButton = getActivity().findViewById(R.id.fragment_menu_button_play_multi);

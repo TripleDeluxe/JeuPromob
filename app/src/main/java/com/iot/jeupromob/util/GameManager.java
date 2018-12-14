@@ -9,6 +9,7 @@ import com.iot.jeupromob.activity.EndFragment;
 import com.iot.jeupromob.activity.PetitBacFragment;
 import com.iot.jeupromob.activity.QuizzGameFragment;
 import com.iot.jeupromob.activity.ShapeGameFragment;
+import com.iot.jeupromob.activity.TrainingFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,8 +30,12 @@ public class GameManager {
         return instance;
     }
 
+    public Fragment[] getMiniGamesFragments(){
+        return gamesFragment;
+    }
+
     //Lance le 1er mini jeu (pour commencer depuis mainActivity) et initialisation des variables
-    public void start(AppCompatActivity mainActivity){
+    public void startSoloGame(AppCompatActivity mainActivity){
 
         //On créer l'Array avec des nouveaux Fragments, on la mélange et on lance le 1er mini-jeu
         gamesFragment = new Fragment[]{
@@ -42,6 +47,14 @@ public class GameManager {
 
         gamesOrder = Random.shuffleArrayList(new ArrayList<Fragment>(Arrays.asList(gamesFragment)));
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, gamesOrder.get(0)).commit();
+    }
+
+    public void startMultiGame(AppCompatActivity mainActivity){
+
+    }
+
+    public void startTraining(AppCompatActivity mainActivity){
+        mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new TrainingFragment()).commit();
     }
 
     //Lance le prochain jeu

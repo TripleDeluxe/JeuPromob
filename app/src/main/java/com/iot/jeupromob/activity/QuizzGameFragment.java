@@ -47,6 +47,7 @@ public class QuizzGameFragment extends Fragment {
     //answers[i] = toutes les réponses possibles de questions[i]
     private ArrayList<String[]> answers = new ArrayList<String[]>();
 
+    //Contient la String d'une question et son index (dans l'ordre d'apparition du fichier strings.xml)
     private class Question{
         public String question;
         public int questionIndex;
@@ -68,20 +69,19 @@ public class QuizzGameFragment extends Fragment {
 
     //Initialise l'Array mRandomQuestions avec un nombre nbQuestions de questions aléatoires et affiche la première question
     private void setQuestions(){
-        //On copy le tableau Questions dans une arrayList
+        //On copy le tableau Questions dans une arrayList de Question
         String[] mQuestions = getResources().getStringArray(R.array.questions);
-        ArrayList<String> mQuestionsArrayList = new ArrayList<>();
+        ArrayList<Question> mQuestionsArrayList = new ArrayList<>();
         for(int i=0; i<mQuestions.length; i++){
-            mQuestionsArrayList.add(mQuestions[i]);
+            mQuestionsArrayList.add(new Question(mQuestions[i], i));
         }
 
         //On créer le tableau de question aléatoire a partir de mQuestionsArrayList
         mRandomQuestions = new ArrayList<Question>();
-
-        for(int i=0; i < nbQuestions; i++){
+        for (int i = 0; i < nbQuestions; i++) {
             int randomIndex = Random.randomInt(mQuestionsArrayList.size() - 1);
-            mRandomQuestions.add(new Question(mQuestionsArrayList.get(randomIndex), randomIndex));
-            mQuestionsArrayList.remove(randomIndex);
+            mRandomQuestions.add(mQuestionsArrayList.get(randomIndex));
+            mQuestionsArrayList.remove(i);
         }
 
         setNextQuestion();
