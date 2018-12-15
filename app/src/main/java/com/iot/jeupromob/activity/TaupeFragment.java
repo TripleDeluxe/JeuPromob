@@ -12,15 +12,15 @@ import android.widget.LinearLayout;
 import org.xmlpull.v1.XmlPullParser;
 
 import com.iot.jeupromob.R;
-import com.iot.jeupromob.util.Monster;
-import com.iot.jeupromob.util.MonsterView;
-import static com.iot.jeupromob.util.Monster.globalMonster;
+import com.iot.jeupromob.util.Taupe;
+import com.iot.jeupromob.util.TaupeView;
+import static com.iot.jeupromob.util.Taupe.globalTaupe;
 
 
 
 
 
-public class MonsterFragment extends Fragment {
+public class TaupeFragment extends Fragment {
 
     /**taille de la zone d'apparition des points definie à on create*/
     public static int layWidth;
@@ -36,12 +36,12 @@ public class MonsterFragment extends Fragment {
      * la compare avec celle du monstre
      * donne un bonus ou un malus
      * recréé un monstre random en remplacant le monstre actuel
-     * On modifie donc pas le parametre myMonster mais l'instance globalMonster
+     * On modifie donc pas le parametre myTaupe mais l'instance globalTaupe
      *
      * */
     private class TrackingTouchListener implements View.OnTouchListener {
 
-        private Monster myMonster;
+        private Taupe myTaupe;
         int track;
 
         @Override public boolean onTouch(final View v, final MotionEvent evt) {
@@ -73,7 +73,7 @@ public class MonsterFragment extends Fragment {
             int compY = (int)Math.floor(fractionY);
 
             if((compX==1)&&(compY==1)){
-                if (myMonster.getColor()==0){
+                if (myTaupe.getColor()==0){
                     score-=5;
                 }
                 else{
@@ -82,14 +82,14 @@ public class MonsterFragment extends Fragment {
                 //pause de 0 à 300 ms avant la création d'un monstre
                 //long slep = (long)Math.floor(Math.random()*300);
                 //wait(slep);
-                globalMonster.changeMonster(layWidth,layHeight);
+                globalTaupe.changeTaupe(layWidth,layHeight);
             }
             else{
                 //pause de 0 à 300 ms avant la création d'un monstre
                 //long slep = (long)Math.floor(Math.random()*300);
                 //wait(slep);
 
-                globalMonster.changeMonster(layWidth,layHeight);
+                globalTaupe.changeTaupe(layWidth,layHeight);
             }
             return true;
         }
@@ -101,7 +101,7 @@ public class MonsterFragment extends Fragment {
 
         //on recupere la taille du layout dans lequel les point vont apparaitrent
         // ! lors de onCreate, le layout n'est pas bien formé, problemes possibles
-        final LinearLayout layout = (LinearLayout) getView().findViewById(R.id.frag_monster_linear_layout);
+        final LinearLayout layout = (LinearLayout) getView().findViewById(R.id.frag_Taupe_linear_layout);
         ViewTreeObserver vto = layout.getViewTreeObserver();
         vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -112,7 +112,7 @@ public class MonsterFragment extends Fragment {
             }
         });
 
-        globalMonster.changeMonster(layWidth,layHeight);
+        globalTaupe.changeTaupe(layWidth,layHeight);
 
     }
 
@@ -120,7 +120,7 @@ public class MonsterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate((XmlPullParser) new MonsterView(this.getContext()), container, false);
+        View rootView = inflater.inflate((XmlPullParser) new TaupeView(this.getContext()), container, false);
         //n'accepte que le .xml alors on cast
         return rootView;
     }

@@ -1,16 +1,12 @@
 package com.iot.jeupromob.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.iot.jeupromob.R;
-import com.iot.jeupromob.util.MonsterView;
 import com.iot.jeupromob.util.WifiP2PBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {

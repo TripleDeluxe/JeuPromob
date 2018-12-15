@@ -5,19 +5,19 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
-import static com.iot.jeupromob.util.Monster.globalMonster;
+import static com.iot.jeupromob.util.Taupe.globalTaupe;
 
 
-public class MonsterView extends View {
+public class TaupeView extends View {
 
     private Paint paint;
 
-    public MonsterView(Context context) {
+    public TaupeView(Context context) {
         super(context);
         setFocusableInTouchMode(true);
         // selection de la couleur
         paint = new Paint();
-        switch(globalMonster.getColor()){
+        switch(globalTaupe.getColor()){
             case(0): paint.setColor(Color.RED);
             case(1): paint.setColor(Color.BLUE);
             case(2): paint.setColor(Color.BLACK);
@@ -27,7 +27,7 @@ public class MonsterView extends View {
     }
 
     /*
-    public void clearMonster(){
+    public void clearTaupe(){
         Canvas.drawColor(Color.TRANSPARENT);
     }
     */
@@ -35,7 +35,7 @@ public class MonsterView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.BLUE);
-        canvas.drawCircle(globalMonster.getX(), globalMonster.getY(), 50, paint);
+        canvas.drawCircle(globalTaupe.getX(), globalTaupe.getY(), 50, paint);
     }
 
 }
