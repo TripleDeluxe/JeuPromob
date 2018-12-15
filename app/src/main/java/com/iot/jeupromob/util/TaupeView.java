@@ -24,17 +24,15 @@ public class TaupeView extends View {
             case(3): paint.setColor(Color.GREEN);
         }
 
+
+
     }
 
-    /*
-    public void clearTaupe(){
-        Canvas.drawColor(Color.TRANSPARENT);
-    }
-    */
+
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawColor(Color.BLUE);
+        canvas.drawColor(Color.WHITE);//remet un fond blanc
         canvas.drawCircle(globalTaupe.getX(), globalTaupe.getY(), 50, paint);
     }
 
