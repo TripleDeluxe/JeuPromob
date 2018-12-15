@@ -42,7 +42,7 @@ public class GameManager {
 
         //On créer l'Array avec des nouveaux Fragments, on la mélange et on lance le 1er mini-jeu
         gamesFragment = new Fragment[]{
-                new PetitBacFragment(),
+                //new PetitBacFragment(),
                 new QuizzGameFragment(),
                 new BeerGameFragment(),
                 new ShapeGameFragment()
