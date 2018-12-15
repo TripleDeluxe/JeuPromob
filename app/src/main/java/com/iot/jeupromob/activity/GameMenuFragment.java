@@ -42,7 +42,7 @@ public class GameMenuFragment extends Fragment {
         mPlaySoloButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                GameManager.getInstance().startSoloGame((AppCompatActivity) getActivity());
+                GameManager.getInstance().startSoloGame((MainActivity) getActivity());
             }
         });
 
@@ -50,7 +50,7 @@ public class GameMenuFragment extends Fragment {
         mPlayMultiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new MultiplayerMenuFragment());
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new MultiplayerMenuFragment()).commit();
             }
         });
 
@@ -58,7 +58,7 @@ public class GameMenuFragment extends Fragment {
         mPlayTrainingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new TrainingFragment());
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new TrainingFragment()).commit();
             }
         });
     }

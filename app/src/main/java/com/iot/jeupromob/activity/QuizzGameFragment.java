@@ -34,7 +34,6 @@ public class QuizzGameFragment extends Fragment {
     private MediaPlayer soundBadAnswer = null;
     private MediaPlayer[] sounds = new MediaPlayer[]{soundGoodAnswer, soundBadAnswer};
 
-    private Button buttonPassGame = null;
     private Button buttonSubmit = null;
     private TextView textViewQuestion = null;
     private TextInputEditText textInput = null;
@@ -93,7 +92,7 @@ public class QuizzGameFragment extends Fragment {
             textInput.setText("");
             textViewQuestion.setText(mRandomQuestions.get(currentQuestionIndex).question);
         }else{
-            GameManager.getInstance().nextGame((AppCompatActivity) getActivity());
+            GameManager.getInstance().nextGame((MainActivity) getActivity());
         }
     }
 
@@ -155,13 +154,6 @@ public class QuizzGameFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 checkAnswer();
-            }
-        });
-        buttonPassGame = getView().findViewById(R.id.fragment_quizz_pass_button2);
-        buttonPassGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameManager.getInstance().nextGame((AppCompatActivity) getActivity());
             }
         });
 

@@ -50,7 +50,6 @@ public class BeerGameFragment extends Fragment implements SensorEventListener {
     /** UI *************************************/
     /**************************************************************/
 
-    private Button buttonPassGame = null;
     private TextView mResX = null;
     private TextView mResY = null;
 
@@ -87,13 +86,6 @@ public class BeerGameFragment extends Fragment implements SensorEventListener {
         // UI
         mResX = (TextView) getActivity().findViewById(R.id.frag_beer_text_resX);
         mResY = (TextView) getActivity().findViewById(R.id.frag_beer_text_resY);
-        buttonPassGame = getView().findViewById(R.id.fragment_beer_game_pass_button);
-        buttonPassGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameManager.getInstance().nextGame((AppCompatActivity) getActivity());
-            }
-        });
     }
 
     @Override

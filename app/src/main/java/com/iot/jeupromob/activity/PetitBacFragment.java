@@ -15,7 +15,6 @@ import com.iot.jeupromob.util.GameManager;
 import com.iot.jeupromob.R;
 
 public class PetitBacFragment extends Fragment {
-    private Button buttonPassGame = null;
 
     public PetitBacFragment() {
         // Required empty public constructor
@@ -33,12 +32,5 @@ public class PetitBacFragment extends Fragment {
     public void onStart(){
         super.onStart();
 
-        buttonPassGame = getView().findViewById(R.id.fragment_petit_bac_pass_button2);
-        buttonPassGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GameManager.getInstance().nextGame((AppCompatActivity) getActivity());
-            }
-        });
     }
 }
