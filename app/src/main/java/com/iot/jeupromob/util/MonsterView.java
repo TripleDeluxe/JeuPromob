@@ -18,9 +18,9 @@ public class MonsterView extends View {
         // selection de la couleur
         paint = new Paint();
         switch(globalMonster.getColor()){
-            case(0): paint.setColor(Color.BLACK);
-            case(1): paint.setColor(Color.RED);
-            case(2): paint.setColor(Color.WHITE);
+            case(0): paint.setColor(Color.RED);
+            case(1): paint.setColor(Color.BLUE);
+            case(2): paint.setColor(Color.BLACK);
             case(3): paint.setColor(Color.GREEN);
         }
 
