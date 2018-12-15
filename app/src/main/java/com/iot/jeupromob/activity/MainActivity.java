@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.iot.jeupromob.R;
+import com.iot.jeupromob.util.MonsterView;
 import com.iot.jeupromob.util.WifiP2PBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {
