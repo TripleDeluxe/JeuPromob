@@ -15,11 +15,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GameManager {
-    public int nbPlayers = 1;
+    private Fragment[] gamesFragment = new Fragment[]{
+            new PetitBacFragment(),
+            new QuizzGameFragment(),
+            new BeerGameFragment(),
+            new ShapeGameFragment()
+    };
 
     private static final int NB_GAMES_TO_PLAY = 3;
     private int currentGameIndex = 0;
-    private Fragment[] gamesFragment = null;
     //Stock les mini-jeux dans un ordre aléatoire
     private ArrayList<Fragment> gamesOrder = null;
 
@@ -36,15 +40,7 @@ public class GameManager {
 
     //Lance le 1er mini jeu (pour commencer depuis mainActivity) et initialisation des variables
     public void startSoloGame(AppCompatActivity mainActivity){
-
         //On créer l'Array avec des nouveaux Fragments, on la mélange et on lance le 1er mini-jeu
-        gamesFragment = new Fragment[]{
-                new PetitBacFragment(),
-                new QuizzGameFragment(),
-                new BeerGameFragment(),
-                new ShapeGameFragment()
-        };
-
         gamesOrder = Random.shuffleArrayList(new ArrayList<Fragment>(Arrays.asList(gamesFragment)));
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, gamesOrder.get(0)).commit();
     }

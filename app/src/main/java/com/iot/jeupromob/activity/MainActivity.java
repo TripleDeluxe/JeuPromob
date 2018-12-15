@@ -10,7 +10,7 @@ import com.iot.jeupromob.R;
 import com.iot.jeupromob.util.WifiP2PBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {
-    //Listener pour les events P2P
+    //IntentFilter pour les events P2P
     private final IntentFilter mIntentFilter = new IntentFilter();
     private WifiP2pManager.Channel mChannel;
     private WifiP2pManager mWifiP2PManager;
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mIsWifiP2PEnabled = false;
     public void setIsWifiP2pEnabled(boolean value){
         mIsWifiP2PEnabled = value;
-        //TO DO : Prevenir l'user sur l'UI
+        //TO DO : Prevenir l'user sur l'UI si le wiki P2P est désactivé
     }
 
     @Override
