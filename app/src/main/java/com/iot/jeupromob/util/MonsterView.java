@@ -20,7 +20,7 @@ public class MonsterView extends View {
         switch(globalMonster.getColor()){
             case(0): paint.setColor(Color.BLACK);
             case(1): paint.setColor(Color.RED);
-            case(2): paint.setColor(Color.BLUE);
+            case(2): paint.setColor(Color.WHITE);
             case(3): paint.setColor(Color.GREEN);
         }
 
@@ -28,14 +28,14 @@ public class MonsterView extends View {
 
     /*
     public void clearMonster(){
-        Canvas.drawColor(Color.WHITE);
+        Canvas.drawColor(Color.TRANSPARENT);
     }
     */
 
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.BLUE);
-        canvas.drawCircle(globalMonster.getX(), globalMonster.getY(), 80, paint);
+        canvas.drawCircle(globalMonster.getX(), globalMonster.getY(), 50, paint);
     }
 
 }

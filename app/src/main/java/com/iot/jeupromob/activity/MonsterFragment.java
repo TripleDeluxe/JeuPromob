@@ -1,43 +1,35 @@
 package com.iot.jeupromob.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.ViewGroup;
-import android.widget.EditText;
-
-import com.iot.jeupromob.util.Monster;
-import com.iot.jeupromob.util.MonsterView;
-
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import org.xmlpull.v1.XmlPullParser;
 
+import com.iot.jeupromob.R;
+import com.iot.jeupromob.util.Monster;
+import com.iot.jeupromob.util.MonsterView;
 import static com.iot.jeupromob.util.Monster.globalMonster;
+
+
+
 
 
 public class MonsterFragment extends Fragment {
 
-    int i = 0;
-    /** diametre du monstre*/
-    public static final int DOT_DIAMETER = 6;
+    /**taille de la zone d'apparition des points definie à on create*/
+    public static int layWidth;
+    public static int layHeight;
+
     /** score et timer*/
     public int timeremaining = 30;
     public static int score = 0;
+
     /**
      * prend en parametre le monstre
      * récupere la position du doigt
@@ -51,9 +43,6 @@ public class MonsterFragment extends Fragment {
 
         private Monster myMonster;
         int track;
-
-        TrackingTouchListener() { myMonster = globalMonster; }
-        private MonsterView monsterViewz;
 
         @Override public boolean onTouch(final View v, final MotionEvent evt) {
             final int action = evt.getAction();
@@ -93,30 +82,37 @@ public class MonsterFragment extends Fragment {
                 //pause de 0 à 300 ms avant la création d'un monstre
                 //long slep = (long)Math.floor(Math.random()*300);
                 //wait(slep);
-                globalMonster.changeMonster(getActivity().getWindowManager().getDefaultDisplay().getWidth(),getActivity().getWindowManager().getDefaultDisplay().getHeight());
-
+                globalMonster.changeMonster(layWidth,layHeight);
             }
             else{
                 //pause de 0 à 300 ms avant la création d'un monstre
                 //long slep = (long)Math.floor(Math.random()*300);
                 //wait(slep);
 
-                globalMonster.changeMonster(getActivity().getWindowManager().getDefaultDisplay().getWidth(),getActivity().getWindowManager().getDefaultDisplay().getHeight());
-
+                globalMonster.changeMonster(layWidth,layHeight);
             }
-
             return true;
         }
-
     }
-
-
 
 
     public void onCreate(Bundle state) {
         super.onCreate(state);
-        globalMonster.changeMonster(getActivity().getWindowManager().getDefaultDisplay().getWidth(),getActivity().getWindowManager().getDefaultDisplay().getHeight());
 
+        //on recupere la taille du layout dans lequel les point vont apparaitrent
+        // ! lors de onCreate, le layout n'est pas bien formé, problemes possibles
+        final LinearLayout layout = (LinearLayout) getView().findViewById(R.id.frag_monster_linear_layout);
+        ViewTreeObserver vto = layout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                layWidth= layout.getMeasuredWidth();
+                layHeight= layout.getMeasuredHeight();
+            }
+        });
+
+        globalMonster.changeMonster(layWidth,layHeight);
 
     }
 
@@ -131,46 +127,5 @@ public class MonsterFragment extends Fragment {
 
 }
 
-
-    /** Called when the activity is first created.
-    @Override public void onCreate(final Bundle state) {
-        super.onCreate(state);
-
-        // install the view
-        setContentView(R.layout.main);
-
-        // find the monsters view
-        monsterView = (MonsterView) findViewById(R.id.monsters);
-        monsterView.setMonsters(monsterModel);
-
-        monsterView.setOnCreateContextMenuListener(this);
-        monsterView.setOnTouchListener(new TrackingTouchListener(monsterModel));
-
-        monsterView.setOnKeyListener((final View v, final int keyCode, final KeyEvent event) -> {
-            if (KeyEvent.ACTION_DOWN != event.getAction()) {
-                return false;
-            }
-            return true;
-        });
-        //Links to the XML for buttons
-        final EditText tb1 = (EditText) findViewById(R.id.text1);
-        final EditText tb2 = (EditText) findViewById(R.id.text2);
-        final EditText tb3 = (EditText) findViewById(R.id.text3);
-        monsterModel.setMonstersChangeListener((Monsters monsters) -> {
-            tb1.setText("Score: " + score);
-            tb2.setText("Time Left: " + timeremaining);
-            tb3.setText("Level: " + level);
-            monsterView.invalidate();
-        });
-
-        findViewById(R.id.button1).setOnClickListener((final View v) ->
-                onPause()
-        );
-        findViewById(R.id.button2).setOnClickListener((final View v) ->
-                onResume()
-        );
-
-    }
-     */
 
 
