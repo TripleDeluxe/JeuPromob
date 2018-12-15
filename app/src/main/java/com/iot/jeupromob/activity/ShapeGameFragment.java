@@ -15,7 +15,9 @@ import com.iot.jeupromob.util.PaintView;
 
 public class ShapeGameFragment extends Fragment {
     private PaintView mPaintView;
-    private Button mButtonPassGame = null;
+    private int mNumberRound = 2;
+    //Initialisée a -1 car chaque appel à checkResult() incrémente cette variable
+    private int mCurrentRoundIndex = 0;
 
     public ShapeGameFragment() {
     }
@@ -41,12 +43,29 @@ public class ShapeGameFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         mPaintView.init(metrics);
 
-        mButtonPassGame = getView().findViewById(R.id.frag_shape_pass_button);
-        mButtonPassGame.setOnClickListener(new View.OnClickListener() {
+        Button mButtonValidate = getActivity().findViewById(R.id.frag_shape_button_validate);
+        mButtonValidate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameManager.getInstance().nextGame((AppCompatActivity) getActivity());
+                checkResult();
             }
         });
+    }
+
+    private void checkResult(){
+        //TO DO : Verifier si la forme se rapproche de la forme à copier
+
+        nextRound();
+    }
+
+    private void nextRound(){
+        mCurrentRoundIndex++;
+
+        if(mCurrentRoundIndex == mNumberRound){
+            GameManager.getInstance().nextGame((MainActivity) getActivity());
+
+        }else{
+            mPaintView.clear();
+        }
     }
 }

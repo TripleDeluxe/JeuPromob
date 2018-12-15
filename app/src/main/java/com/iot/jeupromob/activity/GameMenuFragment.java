@@ -42,14 +42,23 @@ public class GameMenuFragment extends Fragment {
         mPlaySoloButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                GameManager.getInstance().startSoloGame((AppCompatActivity) getActivity());
+                GameManager.getInstance().startSoloGame((MainActivity) getActivity());
             }
         });
+
         mPlayMultiButton = getActivity().findViewById(R.id.fragment_menu_button_play_multi);
         mPlayMultiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new MultiplayerMenuFragment()).commit();
+            }
+        });
 
+        mPlayTrainingButton = getActivity().findViewById(R.id.fragment_menu_button_play_training);
+        mPlayTrainingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new TrainingFragment()).commit();
             }
         });
     }

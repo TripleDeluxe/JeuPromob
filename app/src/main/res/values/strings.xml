@@ -7,7 +7,7 @@
     <string name="title_beer_game">Servez bien la bière</string>
     <string name="title_shape_game">Dessinez la forme</string>
     <string name="title_training">Entraînement</string>
-    <string name="end_title">Bien joué !</string>
+    <string name="title_end">Bien joué !</string>
     <string name="button_pass_game">Passer le jeu</string>
     <string name="button_return_menu">Retour</string>
     <string name="quizz_button_submit">Valider</string>
@@ -38,4 +38,7 @@
         <item>macron</item>
         <item>emmanuelmacron</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
