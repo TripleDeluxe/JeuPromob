@@ -1,14 +1,19 @@
 package com.iot.jeupromob.activity;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import org.xmlpull.v1.XmlPullParser;
 
 import com.iot.jeupromob.R;
@@ -27,8 +32,13 @@ public class TaupeFragment extends Fragment {
     public static int layHeight;
 
     /** score et timer*/
-    public int timeremaining = 30;
+    public CountDownTimer tiktak;
+    public TextView timeText;
     public static int score = 0;
+    public TextView scoreText;
+    public TextView passText;
+
+    private Button passer;
 
     /**
      * prend en parametre le monstre
@@ -44,6 +54,7 @@ public class TaupeFragment extends Fragment {
         private Taupe myTaupe;
         int track;
 
+        @SuppressLint("SetTextI18n")
         @Override public boolean onTouch(final View v, final MotionEvent evt) {
             final int action = evt.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
@@ -72,12 +83,16 @@ public class TaupeFragment extends Fragment {
             double fractionY = evt.getY(track) / (v.getHeight() / 10);
             int compY = (int)Math.floor(fractionY);
 
+
+
             if((compX==1)&&(compY==1)){
                 if (myTaupe.getColor()==0){
-                    score-=5;
+                    score-=6;
+                    scoreText.setText(score);
                 }
                 else{
                     score++;
+                    scoreText.setText(score);
                 }
                 //pause de 0 à 300 ms avant la création d'un monstre
                 //long slep = (long)Math.floor(Math.random()*300);
@@ -91,6 +106,7 @@ public class TaupeFragment extends Fragment {
 
                 globalTaupe.changeTaupe(layWidth,layHeight);
             }
+
             return true;
         }
     }
@@ -98,8 +114,40 @@ public class TaupeFragment extends Fragment {
 
     public void onCreate(Bundle state) {
         super.onCreate(state);
+        scoreText = getView().findViewById(R.id.scoreTaupe);
+        timeText = getView().findViewById(R.id.timeTaupe);
+        passText= (TextView) getView().findViewById(R.id.frag_Taupe_pass_button);
+        passer= (Button) getView().findViewById(R.id.frag_Taupe_pass_button);
+        passer.setOnClickListener(btn);
 
-        //on recupere la taille du layout dans lequel les point vont apparaitrent
+        /**TIMER
+         *
+         * lorsque le timer est fini:
+         *
+         * on charge le score dans totalscore
+         *
+         *
+         **/
+        tiktak = new CountDownTimer(10 * 1000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timeText.setText((int)millisUntilFinished/ 1000);
+            }
+
+            @Override
+            public void onFinish() {
+                timeText.setText("FINI");
+                timeText.setTextColor(16719360);
+                passText.setTextColor(7262720);
+
+
+            }
+        };
+
+        tiktak.start();
+
+
+        //on recupere la taille du layout dans lequel les points vont apparaitrent
         // ! lors de onCreate, le layout n'est pas bien formé, problemes possibles
         final LinearLayout layout = (LinearLayout) getView().findViewById(R.id.frag_Taupe_linear_layout);
         ViewTreeObserver vto = layout.getViewTreeObserver();
@@ -114,6 +162,8 @@ public class TaupeFragment extends Fragment {
 
         globalTaupe.changeTaupe(layWidth,layHeight);
 
+
+
     }
 
     //la view sajoute dans oncreateview car il s'agit d'un fragment, non d'une activité
@@ -124,6 +174,30 @@ public class TaupeFragment extends Fragment {
         //n'accepte que le .xml alors on cast
         return rootView;
     }
+
+
+
+    //switch pr ajouter des bontons au cas ou
+    private View.OnClickListener btn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.frag_Taupe_pass_button:
+                    pass();
+                    break;
+            }
+        }
+    };
+
+
+
+    private void pass(){
+        if(tiktak==null){
+            //passer au fragment suivant
+        }
+    }
+
+
 
 }
 
