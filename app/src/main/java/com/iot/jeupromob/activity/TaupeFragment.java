@@ -140,7 +140,6 @@ public class TaupeFragment extends Fragment {
                 timeText.setTextColor(16719360);
                 passText.setTextColor(7262720);
 
-
             }
         };
 

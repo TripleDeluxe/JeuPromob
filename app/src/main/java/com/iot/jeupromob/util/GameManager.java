@@ -9,6 +9,7 @@ import com.iot.jeupromob.activity.EndFragment;
 import com.iot.jeupromob.activity.PetitBacFragment;
 import com.iot.jeupromob.activity.QuizzGameFragment;
 import com.iot.jeupromob.activity.ShapeGameFragment;
+import com.iot.jeupromob.activity.TaupeFragment;
 import com.iot.jeupromob.activity.TrainingFragment;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class GameManager {
                 new PetitBacFragment(),
                 new QuizzGameFragment(),
                 new BeerGameFragment(),
+                new TaupeFragment(),
                 new ShapeGameFragment()
         };
 

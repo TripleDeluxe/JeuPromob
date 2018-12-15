@@ -1,6 +1,7 @@
 package com.iot.jeupromob.util;
 
 public class ListObject {
+    /**
     public final int id;
     public final String name;
     public final int level;
@@ -17,5 +18,5 @@ public class ListObject {
         //créer le tableau en fonction de chaque mot, séparé par entrée
 
     }
-
+*/
 }
