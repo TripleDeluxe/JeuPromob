@@ -20,11 +20,11 @@ public class Random {
             copy.add(list.get(i));
         }
 
-        Log.d("random", "1 : " + randomInt(1) + " 5 : " + randomInt(5) + " 40 : " + randomInt(40));
+        Log.d("random", "1 : " + randomNumber(1) + " 5 : " + randomNumber(5) + " 40 : " + randomNumber(40));
 
         //Puis on la mélange : ajout d'un element aléatoire avant de le retirer
         for(int i=0; i < list.size(); i++){
-            int random = randomInt(copy.size() - 1);
+            int random = randomNumber(copy.size() - 1);
             result.add(copy.get(random));
             copy.remove(random);
         }
@@ -34,7 +34,7 @@ public class Random {
 
     //Garanti d'avoir une chance égale entre toutes les valeurs de la range
 
-    public static int randomInt(int range){
+    public static int randomNumber(int range){
         boolean isResultValid = false;
         int result = 0;
 
@@ -50,4 +50,5 @@ public class Random {
 
         return result - 1;
     }
+
 }

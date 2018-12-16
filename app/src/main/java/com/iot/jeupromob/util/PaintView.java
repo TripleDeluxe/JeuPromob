@@ -6,12 +6,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.VectorDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class PaintView extends View {
     private final static int M_BRUSH_SIZE = 20;
@@ -24,11 +28,22 @@ public class PaintView extends View {
     private Paint mPaint;
     private Bitmap mBitmap;
     private Canvas mCanvas;
-    private ArrayList<FingerPath> mFingerPaths = new ArrayList<>();
+    public ArrayList<FingerPath> mFingerPaths = new ArrayList<>();
+    private int height;
+    private int width;
+    private Point mOrigin;
+    private int size;
     private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+    private TextView accX;
+    private TextView accY;
 
     public PaintView(Context context) {
         super(context);
+    }
+
+    private class Point{
+        int x;int y;
+        public Point(int x, int y){this.x = x; this.y = y;}
     }
 
     public PaintView(Context context, AttributeSet attrs) {
@@ -44,12 +59,48 @@ public class PaintView extends View {
         mPaint.setAlpha(0xff);
     }
 
-    public void init(DisplayMetrics metrics) {
-        int height = metrics.heightPixels;
-        int width = metrics.widthPixels;
+    public void init(DisplayMetrics metrics, TextView x, TextView y) {
+        //Récupération de la taille de la View
+        height = metrics.heightPixels;
+        width = metrics.widthPixels;
+        mOrigin = new Point(width / 2, height / 2);
+        int minimumSize;
+        int maximumSize;
 
+        //Détermination de la taille aléatoire de la forme
+        if(height > width){
+            maximumSize = height;
+            Double minimumSizeDouble = height * 0.3;
+            minimumSize = minimumSizeDouble.intValue();
+        }else{
+            Double minimumSizeDouble = width * 0.3;
+            minimumSize = minimumSizeDouble.intValue();
+            maximumSize = width;
+        }
+
+        do{
+            size = Random.randomNumber(maximumSize);
+        }while(size < minimumSize);
+
+        //Création du canvas
         mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
+
+        accX = x;
+        accY = y;
+    }
+
+    public void drawCircle(){
+        ArrayList<Path> mCirclePath = new ArrayList<>();
+
+        boolean mFinish = false;
+        do{
+           // int mX =
+        }while(!mFinish);
+    }
+
+    public void drawSquare(){
+        //Point firstPoint =
     }
 
     public void clear() {
@@ -59,6 +110,7 @@ public class PaintView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Log.d("awwer", "draw");
         canvas.save();
         mCanvas.drawColor(M_BACKGROUND_COLOR);
 
@@ -74,6 +126,7 @@ public class PaintView extends View {
         canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
         canvas.restore();
     }
+
     private void touchStart(float x, float y) {
         mPath = new Path();
         FingerPath fp = new FingerPath(M_COLOR, false, false, M_BRUSH_SIZE, mPath);
@@ -94,6 +147,9 @@ public class PaintView extends View {
             mX = x;
             mY = y;
         }
+
+        accX.setText("X : " + mX );
+        accY.setText("Y : " + mY);
     }
 
     private void touchUp() {
@@ -108,6 +164,7 @@ public class PaintView extends View {
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN :
                 touchStart(x, y);
+
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE :

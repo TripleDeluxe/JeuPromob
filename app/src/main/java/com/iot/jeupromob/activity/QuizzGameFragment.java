@@ -78,7 +78,7 @@ public class QuizzGameFragment extends Fragment {
         //On créer le tableau de question aléatoire a partir de mQuestionsArrayList
         mRandomQuestions = new ArrayList<Question>();
         for (int i = 0; i < nbQuestions; i++) {
-            int randomIndex = Random.randomInt(mQuestionsArrayList.size() - 1);
+            int randomIndex = Random.randomNumber(mQuestionsArrayList.size() - 1);
             mRandomQuestions.add(mQuestionsArrayList.get(randomIndex));
             mQuestionsArrayList.remove(i);
         }
