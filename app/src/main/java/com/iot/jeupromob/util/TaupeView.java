@@ -24,10 +24,7 @@ public class TaupeView extends View {
             case(3): paint.setColor(Color.GREEN);
         }
 
-
-
     }
-
 
 
     @Override

@@ -47,6 +47,7 @@ public class GameManager {
                 //new PetitBacFragment(),
                 new QuizzGameFragment(),
                 new BeerGameFragment(),
+                new TaupeFragment(),
                 new ShapeGameFragment()
         };
 
