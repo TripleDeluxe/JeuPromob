@@ -5,12 +5,17 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,8 +33,8 @@ import static com.iot.jeupromob.util.Taupe.globalTaupe;
 public class TaupeFragment extends Fragment {
 
     /**taille de la zone d'apparition des points definie à on create*/
-    public static int layWidth;
-    public static int layHeight;
+    public static int layWidth=368;
+    public static int layHeight=372;
 
     /** score et timer*/
     public CountDownTimer tiktak;
@@ -37,8 +42,9 @@ public class TaupeFragment extends Fragment {
     public static int score = 0;
     public TextView scoreText;
     public TextView passText;
-
-    private Button passer;
+    public ImageView taupeImage;
+    public TranslateAnimation animate;
+    public View myView;
 
     /**
      * prend en parametre le monstre
@@ -49,30 +55,116 @@ public class TaupeFragment extends Fragment {
      * On modifie donc pas le parametre myTaupe mais l'instance globalTaupe
      *
      * */
-    private class TrackingTouchListener implements View.OnTouchListener {
+
+
+
+    //version simplifiée
+    private View.OnTouchListener handleTouch = new View.OnTouchListener() {
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+            float x =  event.getX() - layWidth/2 - 85;
+            float y =  event.getY() - layHeight - 65;
+
+            //float x =  event.getX();
+            //float y =  event.getY();
+
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    //affiche la valeur dans le score
+
+                    /** ANALYSE ET COMPARAISON
+                    Probleme: les valeurs sont en float, elle ne seront quasiment jamais similaires
+                    Solution: arrondir
+                    Probleme2: 1,49 ~ 1,51 or l'arrondi donnera 1 et 2
+                    Solution2: on fait une fraction, si le restultat est proche de 1, la position est validée
+                        */
+
+
+                    //fraction
+                    double fractionX = x / globalTaupe.getX();
+                    //Arrondi du float avec floor puis cast en int
+                    int compX = (int)Math.floor(fractionX);
+
+                    Log.d("x: ",Double.toString(x));
+                    Log.d("getx: ",Double.toString(globalTaupe.getX()));
+                    Log.d("compx: ",Integer.toString(compX));
+
+                    //pareil en y
+                    double fractionY = y / globalTaupe.getY();
+                    int compY = (int)Math.floor(fractionY);
+
+                    Log.d("x: ",Double.toString(x));
+                    Log.d("getx: ",Double.toString(globalTaupe.getX()));
+                    Log.d("compx: ",Integer.toString(compX));
+
+                    Log.d("y: ",Double.toString(y));
+                    Log.d("gety: ",Double.toString(globalTaupe.getY()));
+                    Log.d("compy: ",Integer.toString(compY));
+
+
+                    if((compX==1)&&(compY==1)){
+
+                        int tempX = (int)globalTaupe.getX();
+                        int tempY = (int)globalTaupe.getY();
+
+                        globalTaupe.changeTaupe(layWidth,layHeight);
+                        animate = new TranslateAnimation(tempX, globalTaupe.getX(),tempY, globalTaupe.getY());
+                        animate.setDuration(50);
+                        animate.setFillAfter(true);
+                        taupeImage.startAnimation(animate);
+                        score++;
+                        scoreText.setText(Integer.toString(score));
+                    }
+                    else{
+                        score--;
+                        scoreText.setText(Integer.toString(score));
+
+                    }
+
+
+                    break;
+            }
+
+            return true;
+        }
+    };
+
+
+
+
+
+
+
+/*    private class TrackingTouchListener implements View.OnTouchListener {
 
         private Taupe myTaupe;
         int track;
 
         @SuppressLint("SetTextI18n")
         @Override public boolean onTouch(final View v, final MotionEvent evt) {
+            scoreText.setText(Integer.toString(6));
             final int action = evt.getAction();
             switch (action & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_POINTER_DOWN:
+                    scoreText.setText(Integer.toString(7));
                     final int idx1 = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
                             >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
                     track = (evt.getPointerId(idx1));
                     break;
                 default:
+                    scoreText.setText(Integer.toString(8));
                     return false;
             }
-            /** ANALYSE ET COMPARAISON
+            *//** ANALYSE ET COMPARAISON
             Probleme: les valeurs sont en float, elle ne seront quasiment jamais similaires
             Solution: arrondir
             Probleme2: 1,49 ~ 1,51 or l'arrondi donnera 1 et 2
             Solution2: on fait une fraction, si le restultat est proche de 1, la position est validée
-            */
+            *//*
 
             //fraction
             double fractionX = evt.getX(track) / (v.getWidth() / 10);
@@ -86,39 +178,122 @@ public class TaupeFragment extends Fragment {
 
 
             if((compX==1)&&(compY==1)){
+
+                int tempX = (int)globalTaupe.getX();
+                int tempY = (int)globalTaupe.getY();
+
                 if (myTaupe.getColor()==0){
-                    score-=6;
-                    scoreText.setText(score);
+                    score++;
+                    scoreText.setText(Integer.toString(score));
                 }
                 else{
                     score++;
-                    scoreText.setText(score);
+                    scoreText.setText(Integer.toString(score));
                 }
-                //pause de 0 à 300 ms avant la création d'un monstre
-                //long slep = (long)Math.floor(Math.random()*300);
-                //wait(slep);
                 globalTaupe.changeTaupe(layWidth,layHeight);
+                animate = new TranslateAnimation(tempX, globalTaupe.getX(),tempY, globalTaupe.getY());
+                animate.setDuration(50);
+                animate.setFillAfter(true);
+                taupeImage.startAnimation(animate);
             }
             else{
-                //pause de 0 à 300 ms avant la création d'un monstre
-                //long slep = (long)Math.floor(Math.random()*300);
-                //wait(slep);
+                score--;
+                scoreText.setText(Integer.toString(score));
 
-                globalTaupe.changeTaupe(layWidth,layHeight);
             }
 
             return true;
         }
-    }
+    }*/
+
+
+
+
 
 
     public void onCreate(Bundle state) {
         super.onCreate(state);
+
+
+    }
+
+
+
+
+    @Override
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             Bundle savedInstanceState) {
+
+
+        /*final View root=inflater.inflate(R.layout.fragment_taupe, container, false);
+
+        root.post(new Runnable() {
+            @Override
+            public void run() {
+                layHeight = root.getMeasuredHeight();
+                layWidth= root.getMeasuredWidth();
+                scoreText.setText(Integer.toString(layHeight));
+            }
+        });*/
+
+
+        /*final LinearLayout layout = getView().findViewById(R.id.frag_Taupe_linear_layout);
+        ViewTreeObserver vto = layout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                layout.getViewTreeObserver().removeOnGlobalLayoutListener();
+                layWidth= layout.getMeasuredWidth();
+                layHeight= layout.getMeasuredHeight();
+            }
+        });*/
+
+
+        LinearLayout ll = new LinearLayout(this.getContext());
+        ll.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        ll.setOrientation(LinearLayout.VERTICAL);
+
+
+        myView = inflater.inflate(R.layout.fragment_taupe, container, false);
+
+        myView.setOnTouchListener(handleTouch);
+
+
+        return myView;
+    }
+
+
+
+
+
+
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
+
+
+
+
         scoreText = getView().findViewById(R.id.scoreTaupe);
         timeText = getView().findViewById(R.id.timeTaupe);
-        passText= (TextView) getView().findViewById(R.id.frag_Taupe_pass_button);
-        passer= (Button) getView().findViewById(R.id.frag_Taupe_pass_button);
-        passer.setOnClickListener(btn);
+        taupeImage = getView().findViewById(R.id.imageView1);
+        taupeImage.setImageResource(R.drawable.point);
+
+
+
+        globalTaupe.changeTaupe(layWidth,layHeight);
+
+        animate = new TranslateAnimation(0, globalTaupe.getX(),0, globalTaupe.getY());
+        animate.setDuration(50);
+        animate.setFillAfter(true);
+
+
+
+
+
+
 
         /**TIMER
          *
@@ -128,73 +303,32 @@ public class TaupeFragment extends Fragment {
          *
          *
          **/
-        tiktak = new CountDownTimer(10 * 1000,1000) {
+        tiktak = new CountDownTimer(20 * 1000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timeText.setText((int)millisUntilFinished/ 1000);
+                timeText.setText("0: " + millisUntilFinished/ 1000);
+
+
+
             }
 
             @Override
             public void onFinish() {
                 timeText.setText("FINI");
                 timeText.setTextColor(16719360);
-                passText.setTextColor(7262720);
 
             }
         };
 
         tiktak.start();
 
-
-        //on recupere la taille du layout dans lequel les points vont apparaitrent
-        // ! lors de onCreate, le layout n'est pas bien formé, problemes possibles
-        final LinearLayout layout = (LinearLayout) getView().findViewById(R.id.frag_Taupe_linear_layout);
-        ViewTreeObserver vto = layout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                layWidth= layout.getMeasuredWidth();
-                layHeight= layout.getMeasuredHeight();
-            }
-        });
-
-        globalTaupe.changeTaupe(layWidth,layHeight);
-
-
-
-    }
-
-    //la view sajoute dans oncreateview car il s'agit d'un fragment, non d'une activité
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate((XmlPullParser) new TaupeView(this.getContext()), container, false);
-        //n'accepte que le .xml alors on cast
-        return rootView;
     }
 
 
 
-    //switch pr ajouter des bontons au cas ou
-    private View.OnClickListener btn = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.frag_Taupe_pass_button:
-                    pass();
-                    break;
-            }
-        }
-    };
 
 
 
-    private void pass(){
-        if(tiktak==null){
-            //passer au fragment suivant
-        }
-    }
 
 
 
