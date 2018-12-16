@@ -2,8 +2,10 @@ package com.iot.jeupromob.activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
 import android.util.Log;
@@ -18,12 +20,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.os.Vibrator;
+
 
 import org.xmlpull.v1.XmlPullParser;
 
 import com.iot.jeupromob.R;
 import com.iot.jeupromob.util.Taupe;
 import com.iot.jeupromob.util.TaupeView;
+
+import static android.content.Context.VIBRATOR_SERVICE;
+import static android.support.v4.content.ContextCompat.getSystemService;
 import static com.iot.jeupromob.util.Taupe.globalTaupe;
 
 
@@ -83,18 +90,9 @@ public class TaupeFragment extends Fragment {
                         */
 
 
-                    //fraction
-                    double fractionX = x / globalTaupe.getX();
-                    //Arrondi du float avec floor puis cast en int
-                    int compX = (int)Math.floor(fractionX);
 
-                    Log.d("x: ",Double.toString(x));
-                    Log.d("getx: ",Double.toString(globalTaupe.getX()));
-                    Log.d("compx: ",Integer.toString(compX));
-
-                    //pareil en y
-                    double fractionY = y / globalTaupe.getY();
-                    int compY = (int)Math.floor(fractionY);
+                    int compX = (int)Math.floor(Math.abs(x-globalTaupe.getX()));
+                    int compY= (int)Math.floor(Math.abs(y-globalTaupe.getY()));
 
                     Log.d("x: ",Double.toString(x));
                     Log.d("getx: ",Double.toString(globalTaupe.getX()));
@@ -105,14 +103,14 @@ public class TaupeFragment extends Fragment {
                     Log.d("compy: ",Integer.toString(compY));
 
 
-                    if((compX==1)&&(compY==1)){
+                    if((compX<35)&&(compY<35)){
 
                         int tempX = (int)globalTaupe.getX();
                         int tempY = (int)globalTaupe.getY();
 
                         globalTaupe.changeTaupe(layWidth,layHeight);
                         animate = new TranslateAnimation(tempX, globalTaupe.getX(),tempY, globalTaupe.getY());
-                        animate.setDuration(50);
+                        animate.setDuration(80);
                         animate.setFillAfter(true);
                         taupeImage.startAnimation(animate);
                         score++;
@@ -121,7 +119,7 @@ public class TaupeFragment extends Fragment {
                     else{
                         score--;
                         scoreText.setText(Integer.toString(score));
-
+                        ((Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE)).vibrate(150);
                     }
 
 
@@ -215,6 +213,7 @@ public class TaupeFragment extends Fragment {
         super.onCreate(state);
 
 
+
     }
 
 
@@ -223,6 +222,7 @@ public class TaupeFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+
 
 
         /*final View root=inflater.inflate(R.layout.fragment_taupe, container, false);
@@ -273,17 +273,20 @@ public class TaupeFragment extends Fragment {
         super.onStart();
 
 
-
-
-
         scoreText = getView().findViewById(R.id.scoreTaupe);
         timeText = getView().findViewById(R.id.timeTaupe);
         taupeImage = getView().findViewById(R.id.imageView1);
         taupeImage.setImageResource(R.drawable.point);
+        score = 0;
 
 
 
         globalTaupe.changeTaupe(layWidth,layHeight);
+
+        animate = new TranslateAnimation(0, globalTaupe.getX(),0, globalTaupe.getY());
+        animate.setDuration(80);
+        animate.setFillAfter(true);
+        taupeImage.startAnimation(animate);
 
         animate = new TranslateAnimation(0, globalTaupe.getX(),0, globalTaupe.getY());
         animate.setDuration(50);
