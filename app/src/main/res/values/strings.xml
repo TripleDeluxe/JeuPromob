@@ -1,16 +1,24 @@
 <resources>
+    <!--Titres-->
     <string name="app_name">JeuPromob</string>
-    <string name="button_play_solo">Jouer en solo</string>
-    <string name="button_play_multi">Jouer en multijoueur</string>
     <string name="title_petit_bac">Petit bac</string>
     <string name="title_question_game">Répondez vite</string>
     <string name="title_beer_game">Servez bien la bière</string>
     <string name="title_shape_game">Dessinez la forme</string>
     <string name="title_training">Entraînement</string>
+    <string name="title_multi">Multijoueur</string>
     <string name="title_end">Bien joué !</string>
+
+    <!--UI-->
+
+    <string name="button_play_solo">Jouer en solo</string>
+    <string name="button_play_multi">Jouer en multijoueur</string>
     <string name="button_pass_game">Passer le jeu</string>
     <string name="button_return_menu">Retour</string>
     <string name="quizz_button_submit">Valider</string>
+    <string name="hint_user_name">Entrer votre pseudonyme</string>
+    <string name="textview_neighbor_list">Liste des joueurs a proximité</string>
+    <string name="button_connect">Connexion</string>
 
     <!--Les réponses seront mises en majuscule, auront les espaces effacés -->
 
