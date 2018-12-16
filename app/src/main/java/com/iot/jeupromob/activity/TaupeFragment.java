@@ -279,7 +279,7 @@ public class TaupeFragment extends Fragment {
         scoreText = getView().findViewById(R.id.scoreTaupe);
         timeText = getView().findViewById(R.id.timeTaupe);
         taupeImage = getView().findViewById(R.id.imageView1);
-        taupeImage.setImageResource(R.drawable.point);
+       // taupeImage.setImageResource(R.drawable.point);
 
 
 

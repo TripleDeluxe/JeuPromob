@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.iot.jeupromob.util.GameManager;
 import com.iot.jeupromob.R;
 
+import java.util.ArrayList;
+
 
 public class BeerGameFragment extends Fragment implements SensorEventListener {
     /*************************************************************************************/
@@ -52,6 +54,12 @@ public class BeerGameFragment extends Fragment implements SensorEventListener {
 
     private TextView mResX = null;
     private TextView mResY = null;
+
+    /**************************************************************/
+    /** variables *************************************/
+    /**************************************************************/
+    private boolean mRegisterMode = false;
+    private ArrayList<Float> mSensorValuesY = new ArrayList<Float>();
 
     public BeerGameFragment() {
         // Required empty public constructor
@@ -137,6 +145,8 @@ public class BeerGameFragment extends Fragment implements SensorEventListener {
                     break;
             }
             // faire quelque chose
+
+            mSensorValuesY.add(mAccelerationY);
 
             mResX.setText("Accelerometre X : " + mAccelerationX);
             mResY.setText("Accelerometre Y : " + mAccelerationY);

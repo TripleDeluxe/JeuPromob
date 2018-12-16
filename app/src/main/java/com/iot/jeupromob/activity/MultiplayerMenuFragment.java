@@ -1,18 +1,18 @@
 package com.iot.jeupromob.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.net.Uri;
+import android.graphics.Color;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +61,7 @@ public class MultiplayerMenuFragment extends Fragment {
     }
     //Liste des voisins découverts
     private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
+    private WifiP2pDevice mDeviceToConnect;
 
     //Listener pour mettre a jour la liste des voisins WIfi P2P
     private WifiP2pManager.PeerListListener mPeerListListener = new WifiP2pManager.PeerListListener() {
@@ -76,8 +77,19 @@ public class MultiplayerMenuFragment extends Fragment {
                 // of the change. For instance, if you have a ListView of
                 // available peers, trigger an update.
                 for(int i=0; i < peers.size(); i++){
-                    TextView mTextView = new TextView(getContext());
+                    final TextView mTextView = new TextView(getContext());
                     mTextView.setText(peers.get(i).deviceName);
+                    mTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mTextView.setBackgroundColor(Color.GRAY);
+                            for(int j=0; j < peers.size(); j++){
+                                if(peers.get(j).deviceName == mTextView.getText()){
+                                    mDeviceToConnect = peers.get(j);
+                                }
+                            }
+                        }
+                    });
                     mScrollView.addView(mTextView);
                 }
 
@@ -87,7 +99,7 @@ public class MultiplayerMenuFragment extends Fragment {
 
             if (peers.size() == 0) {
                 TextView mTextView = new TextView(getContext());
-                mTextView.setText("Ïl n'y a pas de voisins découvrable par Wi-Fi");
+                mTextView.setText("Ïl n'y a pas de voisins Wi-Fi");
                 mScrollView.addView(mTextView);
                 return;
             }
@@ -117,7 +129,9 @@ public class MultiplayerMenuFragment extends Fragment {
             mWifiP2PReceiver = new WifiP2PBroadcastReceiver(mWifiP2PManager, mChannel, (MainActivity) getActivity(), mPeerListListener);
 
             Log.d("dd", "Wifi P2P autorisé ");
+
             DiscoverNeighbors();
+
         }else{
             Log.d("dd", "WIFI P2P non autorisé");
 
@@ -145,7 +159,36 @@ public class MultiplayerMenuFragment extends Fragment {
 
             @Override
             public void onFailure(int reason) {
-                //Prévenir l'user que l'on arrive pas à découvrir les voisins
+                Toast.makeText(getActivity(), "Problème Wi-fi Direct : impossible de découvrir les voisins", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void ConnectToP2PDevice(final WifiP2pDevice device){
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = device.deviceAddress;
+        config.wps.setup = WpsInfo.PBC;
+
+        //Sert a donner le mot de passe si l'appareil auquel on souhaite se connecter ne supporte pas Wifi Direct
+        mWifiP2PManager.requestGroupInfo(mChannel, new WifiP2pManager.GroupInfoListener() {
+            @Override
+            public void onGroupInfoAvailable(WifiP2pGroup group) {
+                String groupPassword = group.getPassphrase();
+            }
+        });
+
+        mWifiP2PManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
+
+            @Override
+            public void onSuccess() {
+                // WiFiDirectBroadcastReceiver notifies us. Ignore for now.
+                Toast.makeText(getActivity(), "Vous êtes connecté avec " + device.deviceName, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Toast.makeText(getActivity(), "La connexion n'a pas réussi, réessayer",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -182,9 +225,11 @@ public class MultiplayerMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(GameManager.getInstance().user.name == ""){
-                    // Message d'erreur : vous n'avez pas de pseudo
+                    Toast.makeText(getActivity(), "Vous n'avez pas de pseudonyme", Toast.LENGTH_SHORT).show();
+                }else if(mDeviceToConnect == null){
+                    Toast.makeText(getActivity(), "Vous n'avez pas sélectionner de voisin à se connecter", Toast.LENGTH_SHORT).show();
                 }else{
-
+                    ConnectToP2PDevice(mDeviceToConnect);
                 }
             }
         });
