@@ -25,6 +25,8 @@ public class GameManager {
     private ArrayList<Fragment> gamesOrder = null;
     private String mCurrentMode = "";
 
+    public Player user = new Player("");
+
     //Singleton ==> Une seule instance de cette classe, on ne peut pas en créer de nouveaux (constructeur privé)
     private static GameManager instance = new GameManager();
     private GameManager(){ }
