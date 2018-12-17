@@ -2,6 +2,7 @@ package com.iot.jeupromob.activity;
 
 
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -52,6 +53,7 @@ public class TaupeFragment extends Fragment {
     public boolean isPlaying;
     public float bandeHaute;
     public float bandeCote;
+    public MediaPlayer dring = null;
     float xpos;
     float ypos;
     float viewHeight;
@@ -115,19 +117,20 @@ public class TaupeFragment extends Fragment {
                         float tempY = ypos;
 
                         xpos = (float)((layWidth*Math.random()*0.8));
-                        ypos = (float)((layHeight*Math.random()*0.8));
+                        ypos = (float)((layHeight*Math.random()*0.8)+bandeHaute);
 
-                        animate2 = new TranslateAnimation(tempX, xpos-viewWidth/2,tempY, ypos-viewHeight/2);
+                        animate2 = new TranslateAnimation(tempX-viewWidth/2, xpos-viewWidth/2,tempY-viewHeight/2, ypos-viewHeight/2);
                         animate2.setDuration(10);
                         animate2.setFillAfter(true);
                         boarImage.startAnimation(animate2);
 
-                        animate = new TranslateAnimation(tempX, xpos-viewWidth/2,tempY, ypos-viewHeight/2);
+                        animate = new TranslateAnimation(tempX-viewWidth/2, xpos-viewWidth/2,tempY-viewHeight/2, ypos-viewHeight/2);
                         animate.setDuration(200);
                         animate.setFillAfter(true);
                         taupeImage.startAnimation(animate);
                         score++;
                         scoreText.setText(Integer.toString(score));
+                        dring.start();
                     }
                     else{
                         score-=5;
@@ -146,7 +149,9 @@ public class TaupeFragment extends Fragment {
 
 
     public void onCreate(Bundle state) {
+
         super.onCreate(state);
+        dring = MediaPlayer.create(getContext(), R.raw.bell);
     }
 
 
@@ -212,11 +217,11 @@ public class TaupeFragment extends Fragment {
 
                     score = 0;
 
-                    Button mButtonReturn = getActivity().findViewById(R.id.frag_Taupe_ret_button);
-                    mButtonReturn.setOnClickListener(new View.OnClickListener() {
+                    Button taupeRetour = getActivity().findViewById(R.id.frag_Taupe_ret_button);
+                    taupeRetour.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frag_multimenu_layout, new TrainingFragment()).commit();
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new TrainingFragment()).commit();
                         }
                     });
 
@@ -244,7 +249,7 @@ public class TaupeFragment extends Fragment {
                      *
                      *
                      **/
-                    tiktak = new CountDownTimer(991 * 1000,10) {
+                    tiktak = new CountDownTimer(10 * 1000,10) {
                         @Override
                         public void onTick(long millisUntilFinished) {
 
