@@ -27,6 +27,7 @@ import android.os.Vibrator;
 import org.xmlpull.v1.XmlPullParser;
 
 import com.iot.jeupromob.R;
+import com.iot.jeupromob.util.GameManager;
 import com.iot.jeupromob.util.Taupe;
 import com.iot.jeupromob.util.TaupeView;
 
@@ -41,8 +42,8 @@ import static com.iot.jeupromob.util.Taupe.globalTaupe;
 public class TaupeFragment extends Fragment {
 
     /**taille de la zone d'apparition des points definie à on create*/
-    public static int layWidth=368;
-    public static int layHeight=372;
+    public int layWidth=368;
+    public int layHeight=372;
 
     /** score et timer*/
     public CountDownTimer tiktak;
@@ -187,73 +188,88 @@ public class TaupeFragment extends Fragment {
         return myView;
     }
 
-
-
     @Override
     public void onStart(){
         super.onStart();
         isPlaying= true;
 
-        scoreText = getView().findViewById(R.id.scoreTaupe);
-        timeText = getView().findViewById(R.id.timeTaupe);
-        taupeImage = getView().findViewById(R.id.imageView1);
 
-        taupeImage.setImageResource(R.drawable.target);
+        ViewTreeObserver viewTreeObserver = getView().getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
 
-        cyclingImage = getView().findViewById(R.id.imageViewBack);
-        cyclingImage.setImageResource(R.drawable.cycling);
+                    getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    layWidth = getView().findViewById(R.id.imageViewBack).getWidth();
+                    layHeight = getView().findViewById(R.id.imageViewBack).getHeight();
+                    Log.d("wwwww","" + layWidth + "height " + layHeight);
 
-        boarImage = getView().findViewById(R.id.imageViewBoar);
-        boarImage.setImageResource(R.drawable.boar);
+                    scoreText = getView().findViewById(R.id.scoreTaupe);
+                    timeText = getView().findViewById(R.id.timeTaupe);
+                    taupeImage = getView().findViewById(R.id.imageView1);
 
-        score = 0;
+                    taupeImage.setImageResource(R.drawable.target);
 
-        globalTaupe.changeTaupe(layWidth,layHeight);
+                    cyclingImage = getView().findViewById(R.id.imageViewBack);
+                    cyclingImage.setImageResource(R.drawable.cycling);
 
-        animate2 = new TranslateAnimation(0, globalTaupe.getX(),0, globalTaupe.getY());
-        animate2.setDuration(05);
-        animate2.setFillAfter(true);
-        boarImage.startAnimation(animate2);
+                    boarImage = getView().findViewById(R.id.imageViewBoar);
+                    boarImage.setImageResource(R.drawable.boar);
 
-        animate = new TranslateAnimation(0, globalTaupe.getX(),0, globalTaupe.getY());
-        animate.setDuration(200);
-        animate.setFillAfter(true);
-        taupeImage.startAnimation(animate);
+                    score = 0;
+
+                    globalTaupe.changeTaupe(layWidth,layHeight);
+
+                    animate2 = new TranslateAnimation(0, globalTaupe.getX(),0, globalTaupe.getY());
+                    animate2.setDuration(05);
+                    animate2.setFillAfter(true);
+                    boarImage.startAnimation(animate2);
+
+                    animate = new TranslateAnimation(0, globalTaupe.getX(),0, globalTaupe.getY());
+                    animate.setDuration(200);
+                    animate.setFillAfter(true);
+                    taupeImage.startAnimation(animate);
 
 
-        /**TIMER
-         *
-         * lorsque le timer est fini:
-         *
-         * on charge le score dans totalscore
-         *
-         *
-         **/
-        tiktak = new CountDownTimer(8 * 1000,10) {
-            @Override
-            public void onTick(long millisUntilFinished) {
+                    /**TIMER
+                     *
+                     * lorsque le timer est fini:
+                     *
+                     * on charge le score dans totalscore
+                     *
+                     *
+                     **/
+                    tiktak = new CountDownTimer(8 * 1000,10) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
 
-                if(millisUntilFinished< 3000){
-                    timeText.setTextColor(Color.parseColor("#E60000"));
+                            if(millisUntilFinished< 3000){
+                                timeText.setTextColor(Color.parseColor("#E60000"));
 
-                    timeText.setText("" + millisUntilFinished/ 1000 +":" + (millisUntilFinished/ 10 - (millisUntilFinished/ 1000)*100));
+                                timeText.setText("" + millisUntilFinished/ 1000 +":" + (millisUntilFinished/ 10 - (millisUntilFinished/ 1000)*100));
+                            }
+                            else{
+                                timeText.setText("" + millisUntilFinished/ 1000 +":" + (millisUntilFinished/ 10 - (millisUntilFinished/ 1000)*100));
+                            }
+                        }
+                        @Override
+                        public void onFinish() {
+                            timeText.setText("FINI");
+                            isPlaying= false;
+                            //playerActuel.addscore(score);
+                            //wait(500);
+                            //lancer jeu suivant
+                            GameManager.getInstance().nextGame((MainActivity) getActivity());
+                        }
+                    };
+
+                    tiktak.start();
                 }
-                else{
-                    timeText.setText("" + millisUntilFinished/ 1000 +":" + (millisUntilFinished/ 10 - (millisUntilFinished/ 1000)*100));
-                }
-            }
-            @Override
-            public void onFinish() {
-                timeText.setText("FINI");
-                isPlaying= false;
-                //playerActuel.addscore(score);
-                //wait(500);
-                //lancer jeu suivant
+            });
+        }
 
-            }
-        };
 
-        tiktak.start();
 
     }
 
