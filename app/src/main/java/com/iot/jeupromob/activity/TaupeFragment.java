@@ -201,8 +201,8 @@ public class TaupeFragment extends Fragment {
                 public void onGlobalLayout() {
 
                     getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    layWidth = getView().findViewById(R.id.imageViewBack).getWidth();
-                    layHeight = getView().findViewById(R.id.imageViewBack).getHeight();
+                    layWidth = getView().findViewById(R.id.frag_Taupe_linear_layout).getWidth();
+                    layHeight = getView().findViewById(R.id.frag_Taupe_linear_layout).getHeight();
                     Log.d("wwwww","" + layWidth + "height " + layHeight);
 
                     scoreText = getView().findViewById(R.id.scoreTaupe);
@@ -210,9 +210,6 @@ public class TaupeFragment extends Fragment {
                     taupeImage = getView().findViewById(R.id.imageView1);
 
                     taupeImage.setImageResource(R.drawable.target);
-
-                    cyclingImage = getView().findViewById(R.id.imageViewBack);
-                    cyclingImage.setImageResource(R.drawable.cycling);
 
                     boarImage = getView().findViewById(R.id.imageViewBoar);
                     boarImage.setImageResource(R.drawable.boar);

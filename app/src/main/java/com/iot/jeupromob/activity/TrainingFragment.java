@@ -60,6 +60,14 @@ public class TrainingFragment extends Fragment {
             }
         });
 
+        Button mButtonObstacle = getActivity().findViewById(R.id.fragment_training_button_play_obstacle);
+        mButtonObstacle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new ObstacleFragment()).commit();
+            }
+        });
+
         Button mButtonReturn = getActivity().findViewById(R.id.frag_training_button_return);
         mButtonReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +75,8 @@ public class TrainingFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new GameMenuFragment()).commit();
             }
         });
+
+
     }
 
 }

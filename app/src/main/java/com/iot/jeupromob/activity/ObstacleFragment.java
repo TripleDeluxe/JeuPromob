@@ -26,7 +26,6 @@ import com.iot.jeupromob.util.GameManager;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 import static com.iot.jeupromob.util.Boar.globalBoar;
-import static com.iot.jeupromob.util.Player.globalPlayer;
 
 
 public class ObstacleFragment extends Fragment implements SensorEventListener {
@@ -308,7 +307,7 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
             @Override
             public void onFinish() {
                 cyclisteImage.setVisibility(View.INVISIBLE);
-                globalPlayer.addScore(score);
+                GameManager.getInstance().user.addScore(score);
                 tiktakFinal = new CountDownTimer(2 * 1000,1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {

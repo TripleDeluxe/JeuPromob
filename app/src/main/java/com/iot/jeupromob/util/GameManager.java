@@ -8,6 +8,7 @@ import com.iot.jeupromob.activity.BeerGameFragment;
 import com.iot.jeupromob.activity.EndFragment;
 import com.iot.jeupromob.activity.MainActivity;
 import com.iot.jeupromob.activity.MultiplayerMenuFragment;
+import com.iot.jeupromob.activity.ObstacleFragment;
 import com.iot.jeupromob.activity.PetitBacFragment;
 import com.iot.jeupromob.activity.QuizzGameFragment;
 import com.iot.jeupromob.activity.ShapeGameFragment;
@@ -46,7 +47,7 @@ public class GameManager {
         gamesFragment = new Fragment[]{
                 //new PetitBacFragment(),
                 new QuizzGameFragment(),
-                new BeerGameFragment(),
+                new ObstacleFragment(),
                 new TaupeFragment(),
                 new ShapeGameFragment()
         };

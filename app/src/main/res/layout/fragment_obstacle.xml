@@ -19,7 +19,7 @@
         android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Mangez les cyclistes qui fuient!"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
