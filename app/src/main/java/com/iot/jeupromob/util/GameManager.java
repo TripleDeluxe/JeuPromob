@@ -45,7 +45,6 @@ public class GameManager {
 
         //On créer l'Array avec des nouveaux Fragments, on la mélange et on lance le 1er mini-jeu
         gamesFragment = new Fragment[]{
-                //new PetitBacFragment(),
                 new QuizzGameFragment(),
                 new ObstacleFragment(),
                 new TaupeFragment(),
@@ -66,7 +65,7 @@ public class GameManager {
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new MultiplayerMenuFragment()).commit();
     }
 
-    //Lance le prochain jeu aléatoirement choisi
+    //Lance le prochain jeu aléatoirement choisi ou l'écran de fin
     public void nextGame(MainActivity mainActivity){
 
         if(mCurrentMode == "solo" && currentGameIndex != NB_GAMES_TO_PLAY - 1){

@@ -3,6 +3,7 @@ package com.iot.jeupromob.activity;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.wifi.WifiManager;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -32,7 +33,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class MultiplayerMenuFragment extends Fragment {
-    private boolean mPseudo = false;
 
     /**************************************************************/
     /** UI *************************************/
@@ -54,7 +54,7 @@ public class MultiplayerMenuFragment extends Fragment {
     private WifiP2pManager mWifiP2PManager;
     private WifiP2PBroadcastReceiver mWifiP2PReceiver;
 
-    private boolean mIsWifiP2PEnabled = false;
+    private boolean mIsWifiP2PEnabled = true;
     public void setIsWifiP2pEnabled(boolean value){
         mIsWifiP2PEnabled = value;
         //TO DO : Prevenir l'user sur l'UI si le wiki P2P est désactivé
@@ -111,10 +111,19 @@ public class MultiplayerMenuFragment extends Fragment {
     /**************************************************************/
 
     private void InitP2P(){
+        WifiManager mWifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if(!mWifiManager.isWifiEnabled()){
+            mWifiManager.setWifiEnabled(true);
+            Toast.makeText(getActivity(), "Le wifi vient d'être autorisé", Toast.LENGTH_SHORT).show();
+        }
 
         //Vérifie si le Wifi P2P est bien activé
         if(WifiP2pManager.EXTRA_WIFI_STATE.equals(WifiP2pManager.WIFI_P2P_STATE_ENABLED)){
-            mIsWifiP2PEnabled = true;
+
+            mWifiP2PManager = (WifiP2pManager) getActivity().getSystemService(Context.WIFI_P2P_SERVICE);
+            mChannel =  mWifiP2PManager.initialize(getActivity().getApplicationContext(), getActivity().getMainLooper(), null);
+            mWifiP2PReceiver = new WifiP2PBroadcastReceiver(mWifiP2PManager, mChannel, (MainActivity) getActivity(), mPeerListListener);
+
             // Indicates a change in the Wi-Fi P2P status.
             mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
             // Indicates a change in the list of available peers.
@@ -124,26 +133,12 @@ public class MultiplayerMenuFragment extends Fragment {
             // Indicates this device's details have changed.
             mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
-            mWifiP2PManager = (WifiP2pManager) getActivity().getSystemService(Context.WIFI_P2P_SERVICE);
-            mChannel =  mWifiP2PManager.initialize(getContext(), getActivity().getMainLooper(), null);
-            mWifiP2PReceiver = new WifiP2PBroadcastReceiver(mWifiP2PManager, mChannel, (MainActivity) getActivity(), mPeerListListener);
+            DiscoverNeighbors();
 
             Log.d("dd", "Wifi P2P autorisé ");
 
-            DiscoverNeighbors();
-
         }else{
-            Log.d("dd", "WIFI P2P non autorisé");
-
-            try {
-                Method method1 = mWifiP2PManager.getClass().getMethod("enableP2p", WifiP2pManager.Channel.class);
-                method1.invoke(mWifiP2PManager, mChannel);
-                Toast.makeText(getActivity(), "method found",
-                      Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                Toast.makeText(getActivity(), "method did not found",
-                   Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(getActivity(),"Wifi Direct non autorisé", Toast.LENGTH_LONG).show();
         }
     }
 
