@@ -38,6 +38,7 @@ public class PaintView extends View {
     private Paint mPaint;
     private Bitmap mBitmap;
     private Canvas mCanvas;
+    private String[] mShapes = new String[]{"square", "triangle"};
     public ArrayList<FingerPath> mFingerPaths = new ArrayList<>();
     private int height;
     private int width;
@@ -235,6 +236,7 @@ public class PaintView extends View {
         mUserCoordinates.clear();
         mObjectiveIndex = 0;
         invalidate();
+
     }
 
     public void initRound(){
@@ -243,7 +245,18 @@ public class PaintView extends View {
         mFingerPaths.clear();
         mUserCoordinates.clear();
         mIsRoundFinish = false;
+        drawRandomShape();
         invalidate();
+    }
+
+    private void drawRandomShape(){
+        String randomShape = mShapes[Random.randomNumber(mShapes.length - 1)];
+
+        if(randomShape == "square"){
+            drawSquare();
+        }else if(randomShape == "triangle"){
+            drawTriangle();
+        }
     }
 
     private boolean checkIfObjectiveReached(float x, float y){

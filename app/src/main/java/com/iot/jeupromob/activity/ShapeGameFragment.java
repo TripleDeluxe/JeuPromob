@@ -25,8 +25,7 @@ public class ShapeGameFragment extends Fragment {
     private int mNumberRound = 2;
     //Initialisée a -1 car chaque appel à checkResult() incrémente cette variable
     private int mCurrentRoundIndex = 0;
-    private String mShape;
-    private String[] mShapes = new String[]{"square", "triangle"};
+
 
     public ShapeGameFragment() {
     }
@@ -58,7 +57,6 @@ public class ShapeGameFragment extends Fragment {
                 @Override
                 public void onGlobalLayout() {
                     mPaintView.init(temp);
-                    drawRandomShape();
                 }
             });
         }
@@ -72,17 +70,7 @@ public class ShapeGameFragment extends Fragment {
             GameManager.getInstance().nextGame((MainActivity) getActivity());
         }else{
             mPaintView.initRound();
-            drawRandomShape();
         }
     }
 
-    private void drawRandomShape(){
-        String randomShape = mShapes[Random.randomNumber(mShapes.length - 1)];
-
-        if(randomShape == "square"){
-            mPaintView.drawSquare();
-        }else if(randomShape == "triangle"){
-            mPaintView.drawTriangle();
-        }
-    }
 }

@@ -13,7 +13,7 @@ public class GameServerService extends Service {
     private final IBinder mBinder = new LocalBinder();
 
     public class LocalBinder extends Binder {
-        GameServerService getService() {
+        public GameServerService getService() {
             return GameServerService.this;
         }
     }
