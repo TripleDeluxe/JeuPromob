@@ -49,6 +49,8 @@ public class TaupeFragment extends Fragment {
     public TranslateAnimation animate2;
     public View myView;
     public boolean isPlaying;
+    public float bandeHaute;
+    public float bandeCote;
     float xpos;
     float ypos;
 
@@ -181,12 +183,18 @@ public class TaupeFragment extends Fragment {
 
                     DisplayMetrics displayMetrics = new DisplayMetrics();
                     getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
                     float screenHeight = displayMetrics.heightPixels;
                     float screenWidth = displayMetrics.widthPixels;
+
+                    bandeHaute = screenHeight - viewHeight;
+                    bandeCote = (screenWidth-layWidth)/2;
 
 
 
                     Log.d("wwwww","" + layWidth + "height " + layHeight);
+                    Log.d("wwwww","view" + viewHeight + "height " + viewWidth);
+                    Log.d("wwwww","screen" + screenHeight + "height " + screenWidth);
 
                     scoreText = getView().findViewById(R.id.scoreTaupe);
                     timeText = getView().findViewById(R.id.timeTaupe);
