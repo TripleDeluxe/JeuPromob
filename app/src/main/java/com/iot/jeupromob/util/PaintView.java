@@ -265,59 +265,66 @@ public class PaintView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.save();
-        mCanvas.drawColor(M_BACKGROUND_COLOR);
-        mPaint.setStrokeWidth(M_BRUSH_SIZE);
-        mPaint.setMaskFilter(null);
+        if(!mIsRoundFinish){
+            canvas.save();
+            mCanvas.drawColor(M_BACKGROUND_COLOR);
+            mPaint.setStrokeWidth(M_BRUSH_SIZE);
+            mPaint.setMaskFilter(null);
 
-        mPaint.setColor(M_SHAPE_COLOR);
-        mCanvas.drawPath(mShapeToDraw, mPaint);
+            mPaint.setColor(M_SHAPE_COLOR);
+            mCanvas.drawPath(mShapeToDraw, mPaint);
 
-        Path mObjective = new Path();
-        //mObjective.moveTo();
-        mObjective.addCircle(mShapeObjectives.get(mObjectiveIndex).x, mShapeObjectives.get(mObjectiveIndex).y, M_OBJECTIVE_RADIUS, Path.Direction.CW);
-        mPaint.setColor(M_OBJECTIVE_COLOR);
-        mCanvas.drawPath(mObjective, mPaint);
+            Path mObjective = new Path();
+            //mObjective.moveTo();
+            mObjective.addCircle(mShapeObjectives.get(mObjectiveIndex).x, mShapeObjectives.get(mObjectiveIndex).y, M_OBJECTIVE_RADIUS, Path.Direction.CW);
+            mPaint.setColor(M_OBJECTIVE_COLOR);
+            mCanvas.drawPath(mObjective, mPaint);
 
-        for (FingerPath fp : mFingerPaths) {
-            mPaint.setColor(fp.color);
-            mCanvas.drawPath(fp.path, mPaint);
+            for (FingerPath fp : mFingerPaths) {
+                mPaint.setColor(fp.color);
+                mCanvas.drawPath(fp.path, mPaint);
+            }
+
+            canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
+            canvas.restore();
         }
-
-        canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-        canvas.restore();
     }
 
     private void touchStart(float x, float y) {
-        if(mFingerPaths.size() > 1){
-            clearUser();
-        }
-        mPath = new Path();
-        mPath.reset();
-        mPath.moveTo(x, y);
-        mX = x;
-        mY = y;
-        FingerPath fp = new FingerPath(M_COLOR, false, false, M_BRUSH_SIZE, mPath);
-        mFingerPaths.add(fp);
+        if(!mIsRoundFinish){
+            if(mFingerPaths.size() > 1){
+                clearUser();
+            }
+            mPath = new Path();
+            mPath.reset();
+            mPath.moveTo(x, y);
+            mX = x;
+            mY = y;
+            FingerPath fp = new FingerPath(M_COLOR, false, false, M_BRUSH_SIZE, mPath);
+            mFingerPaths.add(fp);
 
-        if(checkIfObjectiveReached(x, y)){
+            if(checkIfObjectiveReached(x, y)){
 
-        }else{
-            soundBadAnswer.start();
+            }else{
+                soundBadAnswer.start();
+            }
         }
+
     }
 
     private void touchMove(float x, float y) {
-        checkIfObjectiveReached(x, y);
+        if(!mIsRoundFinish){
+            checkIfObjectiveReached(x, y);
 
-        if(isObjectiveReached){
-            float dx = Math.abs(x - mX);
-            float dy = Math.abs(y - mY);
+            if(isObjectiveReached){
+                float dx = Math.abs(x - mX);
+                float dy = Math.abs(y - mY);
 
-            if (dx >= M_TOUCH_TOLERANCE || dy >= M_TOUCH_TOLERANCE) {
-                mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-                mX = x;
-                mY = y;
+                if (dx >= M_TOUCH_TOLERANCE || dy >= M_TOUCH_TOLERANCE) {
+                    mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+                    mX = x;
+                    mY = y;
+                }
             }
         }
 

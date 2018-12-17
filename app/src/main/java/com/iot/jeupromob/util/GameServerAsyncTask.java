@@ -45,15 +45,9 @@ public class GameServerAsyncTask extends AsyncTask<String, Void, String> {
              * If this code is reached, a client has connected and transferred data
              * Save the input stream from the client as a JPEG file
              */
-            final File f = new File(Environment.getExternalStorageDirectory() + "/"
-                    + context.getPackageName() + "/wifip2pshared-" + System.currentTimeMillis()
-                    + ".jpg");
 
-            File dirs = new File(f.getParent());
-            if (!dirs.exists())
-                dirs.mkdirs();
-            f.createNewFile();
-            InputStream inputstream = client.getInputStream();
+            String mess = client.getInputStream().toString();
+            Log.d("test_serveur", mess);
 
             serverSocket.close();
         } catch (IOException e) {
