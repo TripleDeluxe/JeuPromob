@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -48,6 +49,8 @@ public class TaupeFragment extends Fragment {
     public TranslateAnimation animate2;
     public View myView;
     public boolean isPlaying;
+    public float bandeHaute;
+    public float bandeCote;
     float xpos;
     float ypos;
 
@@ -174,7 +177,24 @@ public class TaupeFragment extends Fragment {
                     getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     layWidth = getView().findViewById(R.id.frag_Taupe_linear_layout).getWidth();
                     layHeight = getView().findViewById(R.id.frag_Taupe_linear_layout).getHeight();
+
+                    float viewHeight = getView().getHeight();
+                    float viewWidth = getView().getWidth();
+
+                    DisplayMetrics displayMetrics = new DisplayMetrics();
+                    getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+                    float screenHeight = displayMetrics.heightPixels;
+                    float screenWidth = displayMetrics.widthPixels;
+
+                    bandeHaute = screenHeight - viewHeight;
+                    bandeCote = (screenWidth-layWidth)/2;
+
+
+
                     Log.d("wwwww","" + layWidth + "height " + layHeight);
+                    Log.d("wwwww","view" + viewHeight + "height " + viewWidth);
+                    Log.d("wwwww","screen" + screenHeight + "height " + screenWidth);
 
                     scoreText = getView().findViewById(R.id.scoreTaupe);
                     timeText = getView().findViewById(R.id.timeTaupe);
