@@ -27,7 +27,7 @@ public class PaintView extends View {
     private static final int M_SHAPE_COLOR = Color.GRAY;
     private static final float M_TOUCH_TOLERANCE = 4;
     private static final int M_MINIMUM_MARGIN = 100;
-    private static final int M_PRECISION = 100;
+    private static final int M_PRECISION = 200;
     private static final int M_TOLERANCE = 10;
     private static final int M_OBJECTIVE_COLOR = Color.RED;
     private static final int M_OBJECTIVE_RADIUS = 40;
@@ -54,6 +54,7 @@ public class PaintView extends View {
     private ArrayList<Point> mShapeObjectives = new ArrayList<>();
     private int mObjectiveIndex = 0;
     private boolean isObjectiveReached = false;
+    private boolean mIsRoundFinish = false;
 
     private MediaPlayer soundBadAnswer = null;
     private MediaPlayer soundGoodAnswer = null;
@@ -252,7 +253,8 @@ public class PaintView extends View {
             soundGoodAnswer.start();
 
             if(mObjectiveIndex == mShapeObjectives.size()){
-                mShapeGameFragment.nextRound();
+                calculateScore();
+                mIsRoundFinish = true;
             }
 
             return true;
@@ -328,22 +330,24 @@ public class PaintView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
+        if(!mIsRoundFinish){
+            float x = event.getX();
+            float y = event.getY();
 
-        switch(event.getAction()) {
-            case MotionEvent.ACTION_DOWN :
-                touchStart(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE :
-                touchMove(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP :
-                touchUp();
-                invalidate();
-                break;
+            switch(event.getAction()) {
+                case MotionEvent.ACTION_DOWN :
+                    touchStart(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_MOVE :
+                    touchMove(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP :
+                    touchUp();
+                    invalidate();
+                    break;
+            }
         }
 
         return true;

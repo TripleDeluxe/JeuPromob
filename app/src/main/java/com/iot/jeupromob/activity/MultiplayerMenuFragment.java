@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +43,7 @@ public class MultiplayerMenuFragment extends Fragment {
     private Button mButtonReturn = null;
     private TextView mTextViewName =  null;
     private TextInputEditText mTextInputName = null;
-    private ScrollView mScrollView = null;
+    private LinearLayout mPeersViewList = null;
 
     /**************************************************************/
     /** Wifi P2P *************************************/
@@ -90,7 +91,7 @@ public class MultiplayerMenuFragment extends Fragment {
                             }
                         }
                     });
-                    mScrollView.addView(mTextView);
+                    mPeersViewList.addView(mTextView);
                 }
 
                 // Perform any other updates needed based on the new list of
@@ -100,7 +101,7 @@ public class MultiplayerMenuFragment extends Fragment {
             if (peers.size() == 0) {
                 TextView mTextView = new TextView(getContext());
                 mTextView.setText("Ïl n'y a pas de voisins Wi-Fi");
-                mScrollView.addView(mTextView);
+                mPeersViewList.addView(mTextView);
                 return;
             }
         }
@@ -210,7 +211,17 @@ public class MultiplayerMenuFragment extends Fragment {
 
         mTextInputName = getActivity().findViewById(R.id.frag_multi_input_name);
 
-        mScrollView = getActivity().findViewById(R.id.frag_multi_scrollview);
+        //Initialisation de la liste des voisins avec le serveur test
+        mPeersViewList = getActivity().findViewById(R.id.frag_multi_scrollview_linearlayout);
+        final TextView mTextView = new TextView(getContext());
+        mTextView.setText("Serveur Test");
+        mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTextView.setBackgroundColor(Color.GRAY);
+            }
+        });
+        mPeersViewList.addView(mTextView);
 
         mTextViewName = getActivity().findViewById(R.id.frag_multi_textview_name);
         mTextViewName.setText("Pseudonyme : ");
@@ -219,13 +230,14 @@ public class MultiplayerMenuFragment extends Fragment {
         mButtonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(GameManager.getInstance().user.name == ""){
-                    Toast.makeText(getActivity(), "Vous n'avez pas de pseudonyme", Toast.LENGTH_SHORT).show();
-                }else if(mDeviceToConnect == null){
-                    Toast.makeText(getActivity(), "Vous n'avez pas sélectionner de voisin à se connecter", Toast.LENGTH_SHORT).show();
-                }else{
-                    ConnectToP2PDevice(mDeviceToConnect);
-                }
+//                if(GameManager.getInstance().user.name == ""){
+//                    Toast.makeText(getActivity(), "Vous n'avez pas de pseudonyme", Toast.LENGTH_SHORT).show();
+//                }else if(mDeviceToConnect == null){
+//                    Toast.makeText(getActivity(), "Vous n'avez pas sélectionner de voisin à se connecter", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    ConnectToP2PDevice(mDeviceToConnect);
+//                }
+
             }
         });
 

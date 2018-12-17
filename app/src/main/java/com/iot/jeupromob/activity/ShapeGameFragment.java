@@ -49,13 +49,15 @@ public class ShapeGameFragment extends Fragment {
 
         mPaintView = getActivity().findViewById(R.id.frag_shape_paintview_user);
 
+        final ShapeGameFragment temp = this;
+
         //On attends que le layout global soit initialisé pour avoir la taille de la view (cf init() )
         ViewTreeObserver viewTreeObserver = getView().getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    mPaintView.init((ShapeGameFragment)getParentFragment());
+                    mPaintView.init(temp);
                     drawRandomShape();
                 }
             });
