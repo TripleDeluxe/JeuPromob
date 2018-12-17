@@ -237,11 +237,12 @@ public class PaintView extends View {
         invalidate();
     }
 
-    public void clear(){
+    public void initRound(){
         mShapeToDraw.reset();
         mShapeCoordinates.clear();
         mFingerPaths.clear();
         mUserCoordinates.clear();
+        mIsRoundFinish = false;
         invalidate();
     }
 
@@ -254,6 +255,7 @@ public class PaintView extends View {
 
             if(mObjectiveIndex == mShapeObjectives.size()){
                 calculateScore();
+                mShapeGameFragment.nextRound();
                 mIsRoundFinish = true;
             }
 

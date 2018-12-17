@@ -65,15 +65,13 @@ public class ShapeGameFragment extends Fragment {
 
     }
 
-
-
     public void nextRound(){
         mCurrentRoundIndex++;
 
         if(mCurrentRoundIndex == mNumberRound){
             GameManager.getInstance().nextGame((MainActivity) getActivity());
         }else{
-            mPaintView.clear();
+            mPaintView.initRound();
             drawRandomShape();
         }
     }

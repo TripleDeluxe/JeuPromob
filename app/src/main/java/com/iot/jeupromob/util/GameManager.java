@@ -60,11 +60,6 @@ public class GameManager {
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new MultiplayerMenuFragment()).commit();
     }
 
-    public void startTrainingGame(MainActivity mainActivity){
-        mCurrentMode = "training";
-        mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new MultiplayerMenuFragment()).commit();
-    }
-
     //Lance le prochain jeu aléatoirement choisi ou l'écran de fin
     public void nextGame(MainActivity mainActivity){
 
