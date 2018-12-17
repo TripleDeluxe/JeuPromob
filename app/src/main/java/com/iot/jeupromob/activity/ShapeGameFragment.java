@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -24,10 +26,7 @@ public class ShapeGameFragment extends Fragment {
     //Initialisée a -1 car chaque appel à checkResult() incrémente cette variable
     private int mCurrentRoundIndex = 0;
     private String mShape;
-    private String[] mShapes = new String[]{"circle", "triangle", "square"};
-
-    private TextView mTextViewX;
-    private TextView mTextViewY;
+    private String[] mShapes = new String[]{"square", "triangle"};
 
     public ShapeGameFragment() {
     }
@@ -48,49 +47,42 @@ public class ShapeGameFragment extends Fragment {
     public void onStart(){
         super.onStart();
 
-        mTextViewX = getActivity().findViewById(R.id.frag_shape_acc_x);
-        mTextViewY = getActivity().findViewById(R.id.frag_shape_acc_y);
-
-        mShape = mShapes[Random.randomNumber(mShapes.length - 1)];
-
         mPaintView = getActivity().findViewById(R.id.frag_shape_paintview_user);
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mPaintView.init(metrics, mTextViewX, mTextViewY);
 
-        Button mButtonValidate = getActivity().findViewById(R.id.frag_shape_button_validate);
-        mButtonValidate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkResult();
-            }
-        });
-
-
-    }
-
-    private void checkResult(){
-        //TO DO : Verifier si la forme se rapproche de la forme à copier
-        ArrayList<FingerPath> mPath = mPaintView.mFingerPaths;
-
-        for(int i=0; i < mPath.size(); i++){
-            if(mShape == "circle"){
-
-            }
+        //On attends que le layout global soit initialisé pour avoir la taille de la view (cf init() )
+        ViewTreeObserver viewTreeObserver = getView().getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    mPaintView.init((ShapeGameFragment)getParentFragment());
+                    drawRandomShape();
+                }
+            });
         }
 
-
-        nextRound();
     }
 
-    private void nextRound(){
+
+
+    public void nextRound(){
         mCurrentRoundIndex++;
 
         if(mCurrentRoundIndex == mNumberRound){
             GameManager.getInstance().nextGame((MainActivity) getActivity());
-
         }else{
             mPaintView.clear();
+            drawRandomShape();
+        }
+    }
+
+    private void drawRandomShape(){
+        String randomShape = mShapes[Random.randomNumber(mShapes.length - 1)];
+
+        if(randomShape == "square"){
+            mPaintView.drawSquare();
+        }else if(randomShape == "triangle"){
+            mPaintView.drawTriangle();
         }
     }
 }
