@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,6 +54,8 @@ public class TaupeFragment extends Fragment {
     public float bandeCote;
     float xpos;
     float ypos;
+    float viewHeight;
+    float viewWidth;
 
     /**
      * prend en parametre le monstre
@@ -114,12 +117,12 @@ public class TaupeFragment extends Fragment {
                         xpos = (float)((layWidth*Math.random()*0.8));
                         ypos = (float)((layHeight*Math.random()*0.8));
 
-                        animate2 = new TranslateAnimation(tempX, xpos-65,tempY, ypos-65);
+                        animate2 = new TranslateAnimation(tempX, xpos-viewWidth/2,tempY, ypos-viewHeight/2);
                         animate2.setDuration(10);
                         animate2.setFillAfter(true);
                         boarImage.startAnimation(animate2);
 
-                        animate = new TranslateAnimation(tempX, xpos-65,tempY, ypos-65);
+                        animate = new TranslateAnimation(tempX, xpos-viewWidth/2,tempY, ypos-viewHeight/2);
                         animate.setDuration(200);
                         animate.setFillAfter(true);
                         taupeImage.startAnimation(animate);
@@ -178,8 +181,8 @@ public class TaupeFragment extends Fragment {
                     layWidth = getView().findViewById(R.id.frag_Taupe_linear_layout).getWidth();
                     layHeight = getView().findViewById(R.id.frag_Taupe_linear_layout).getHeight();
 
-                    float viewHeight = getView().getHeight();
-                    float viewWidth = getView().getWidth();
+                    viewHeight = getView().getHeight();
+                    viewWidth = getView().getWidth();
 
                     DisplayMetrics displayMetrics = new DisplayMetrics();
                     getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -193,8 +196,10 @@ public class TaupeFragment extends Fragment {
 
 
                     Log.d("wwwww","" + layWidth + "height " + layHeight);
-                    Log.d("wwwww","view" + viewHeight + "height " + viewWidth);
-                    Log.d("wwwww","screen" + screenHeight + "height " + screenWidth);
+                    Log.d("wwwww","haut" + bandeHaute);
+                    Log.d("wwwww","cote" + bandeCote);
+                    Log.d("wwwww","screenH" + screenHeight +"screenW" + screenWidth);
+                    Log.d("wwwww","viewH" + viewHeight +"viewW" + viewWidth);
 
                     scoreText = getView().findViewById(R.id.scoreTaupe);
                     timeText = getView().findViewById(R.id.timeTaupe);
@@ -207,14 +212,23 @@ public class TaupeFragment extends Fragment {
 
                     score = 0;
 
-                    xpos = layWidth/2 ;
-                    ypos =layHeight/2 ;
-                    animate2 = new TranslateAnimation(xpos-65, xpos-65,ypos-65, ypos-65);
+                    Button mButtonReturn = getActivity().findViewById(R.id.frag_Taupe_ret_button);
+                    mButtonReturn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frag_multimenu_layout, new TrainingFragment()).commit();
+                        }
+                    });
+
+
+                    xpos = viewWidth/2 ;
+                    ypos = viewHeight/2 ;
+                    animate2 = new TranslateAnimation(0, 0,0, 0);
                     animate2.setDuration(10);
                     animate2.setFillAfter(true);
                     boarImage.startAnimation(animate2);
 
-                    animate = new TranslateAnimation(xpos-65, xpos-65,ypos-65, ypos-65);
+                    animate = new TranslateAnimation(0, 0,0, 0);
                     animate.setDuration(200);
                     animate.setFillAfter(true);
                     taupeImage.startAnimation(animate);
@@ -230,7 +244,7 @@ public class TaupeFragment extends Fragment {
                      *
                      *
                      **/
-                    tiktak = new CountDownTimer(12 * 1000,10) {
+                    tiktak = new CountDownTimer(991 * 1000,10) {
                         @Override
                         public void onTick(long millisUntilFinished) {
 
