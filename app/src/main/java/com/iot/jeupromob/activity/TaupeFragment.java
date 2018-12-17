@@ -1,38 +1,27 @@
 package com.iot.jeupromob.activity;
 
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.VibrationEffect;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.os.Vibrator;
 
 
-import org.xmlpull.v1.XmlPullParser;
-
 import com.iot.jeupromob.R;
 import com.iot.jeupromob.util.GameManager;
-import com.iot.jeupromob.util.Taupe;
-import com.iot.jeupromob.util.TaupeView;
 
 import static android.content.Context.VIBRATOR_SERVICE;
-import static android.support.v4.content.ContextCompat.getSystemService;
 import static com.iot.jeupromob.util.Taupe.globalTaupe;
 
 
@@ -42,11 +31,12 @@ import static com.iot.jeupromob.util.Taupe.globalTaupe;
 public class TaupeFragment extends Fragment {
 
     /**taille de la zone d'apparition des points definie à on create*/
-    public int layWidth=368;
-    public int layHeight=372;
+    public int layWidth;
+    public int layHeight;
 
     /** score et timer*/
     public CountDownTimer tiktak;
+    public CountDownTimer tiktakFinal;
     public TextView timeText;
     public static int score = 0;
     public TextView scoreText;
@@ -58,6 +48,8 @@ public class TaupeFragment extends Fragment {
     public TranslateAnimation animate2;
     public View myView;
     public boolean isPlaying;
+    float xpos;
+    float ypos;
 
     /**
      * prend en parametre le monstre
@@ -78,8 +70,8 @@ public class TaupeFragment extends Fragment {
         public boolean onTouch(View v, MotionEvent event) {
             if(!isPlaying){return false;}
 
-            float x =  event.getX() - layWidth/2 - 85;
-            float y =  event.getY() - layHeight - 65;
+            float x =  event.getX();
+            float y =  event.getY();
 
             //float x =  event.getX();
             //float y =  event.getY();
@@ -98,33 +90,35 @@ public class TaupeFragment extends Fragment {
 
 
 
-                    int compX = (int)Math.floor(Math.abs(x-globalTaupe.getX()));
-                    int compY= (int)Math.floor(Math.abs(y-globalTaupe.getY()));
+                    int compX = (int)Math.floor(Math.abs(x-xpos));
+                    int compY= (int)Math.floor(Math.abs(y-ypos));
 
-                    Log.d("x: ",Double.toString(x));
-                    Log.d("getx: ",Double.toString(globalTaupe.getX()));
-                    Log.d("compx: ",Integer.toString(compX));
+                    Log.d("www","x: " + Double.toString(x));
+                    Log.d("www","getx: " + Double.toString(xpos));
+                    Log.d("www","compx: " + Integer.toString(compX));
 
-                    Log.d("y: ",Double.toString(y));
-                    Log.d("gety: ",Double.toString(globalTaupe.getY()));
-                    Log.d("compy: ",Integer.toString(compY));
+                    Log.d("www","y: " + Double.toString(y));
+                    Log.d("www","gety: " + Double.toString(ypos));
+                    Log.d("www","compy: " + Integer.toString(compY));
+
 
 
                     if((compX<35)&&(compY<35)){
 
-                        int tempX = (int)globalTaupe.getX();
-                        int tempY = (int)globalTaupe.getY();
+                        float tempX = xpos;
+                        float tempY = ypos;
 
-                        globalTaupe.changeTaupe(layWidth,layHeight);
-                        animate2 = new TranslateAnimation(tempX, globalTaupe.getX(),tempY, globalTaupe.getY());
-                        animate2.setDuration(05);
+                        xpos = (float)((layWidth*Math.random()*0.8));
+                        ypos = (float)((layHeight*Math.random()*0.8));
+
+                        animate2 = new TranslateAnimation(tempX, xpos-65,tempY, ypos-65);
+                        animate2.setDuration(10);
                         animate2.setFillAfter(true);
                         boarImage.startAnimation(animate2);
 
-                        animate = new TranslateAnimation(tempX, globalTaupe.getX(),tempY, globalTaupe.getY());
+                        animate = new TranslateAnimation(tempX, xpos-65,tempY, ypos-65);
                         animate.setDuration(200);
                         animate.setFillAfter(true);
-
                         taupeImage.startAnimation(animate);
                         score++;
                         scoreText.setText(Integer.toString(score));
@@ -145,7 +139,6 @@ public class TaupeFragment extends Fragment {
 
 
 
-
     public void onCreate(Bundle state) {
         super.onCreate(state);
     }
@@ -155,28 +148,6 @@ public class TaupeFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-
-        /*final View root=inflater.inflate(R.layout.fragment_taupe, container, false);
-
-        root.post(new Runnable() {
-            @Override
-            public void run() {
-                layHeight = root.getMeasuredHeight();
-                layWidth= root.getMeasuredWidth();
-                scoreText.setText(Integer.toString(layHeight));
-            }
-        });*/
-
-        /*final LinearLayout layout = getView().findViewById(R.id.frag_Taupe_linear_layout);
-        ViewTreeObserver vto = layout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                layout.getViewTreeObserver().removeOnGlobalLayoutListener();
-                layWidth= layout.getMeasuredWidth();
-                layHeight= layout.getMeasuredHeight();
-            }
-        });*/
 
 
         LinearLayout ll = new LinearLayout(this.getContext());
@@ -216,17 +187,19 @@ public class TaupeFragment extends Fragment {
 
                     score = 0;
 
-                    globalTaupe.changeTaupe(layWidth,layHeight);
-
-                    animate2 = new TranslateAnimation(0, globalTaupe.getX(),0, globalTaupe.getY());
-                    animate2.setDuration(05);
+                    xpos = layWidth/2 ;
+                    ypos =layHeight/2 ;
+                    animate2 = new TranslateAnimation(xpos-65, xpos-65,ypos-65, ypos-65);
+                    animate2.setDuration(10);
                     animate2.setFillAfter(true);
                     boarImage.startAnimation(animate2);
 
-                    animate = new TranslateAnimation(0, globalTaupe.getX(),0, globalTaupe.getY());
+                    animate = new TranslateAnimation(xpos-65, xpos-65,ypos-65, ypos-65);
                     animate.setDuration(200);
                     animate.setFillAfter(true);
                     taupeImage.startAnimation(animate);
+
+
 
 
                     /**TIMER
@@ -237,7 +210,7 @@ public class TaupeFragment extends Fragment {
                      *
                      *
                      **/
-                    tiktak = new CountDownTimer(8 * 1000,10) {
+                    tiktak = new CountDownTimer(12 * 1000,10) {
                         @Override
                         public void onTick(long millisUntilFinished) {
 
@@ -252,12 +225,25 @@ public class TaupeFragment extends Fragment {
                         }
                         @Override
                         public void onFinish() {
-                            timeText.setText("FINI");
                             isPlaying= false;
-                            //playerActuel.addscore(score);
-                            //wait(500);
-                            //lancer jeu suivant
-                            GameManager.getInstance().nextGame((MainActivity) getActivity());
+                            timeText.setText("FINI!");
+
+
+                            GameManager.getInstance().user.addScore(score);
+                            tiktakFinal = new CountDownTimer(1 * 1000,1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    GameManager.getInstance().nextGame((MainActivity) getActivity());
+                                }
+
+                            };
+                            tiktakFinal.start();
+
+
                         }
                     };
 

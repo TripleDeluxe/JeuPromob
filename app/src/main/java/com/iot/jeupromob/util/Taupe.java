@@ -7,14 +7,12 @@ package com.iot.jeupromob.util;
 public class Taupe {
 
     private float x, y;
-    private int color;
 
-    public static volatile Taupe globalTaupe = new Taupe(1,1,1);
+    public static volatile Taupe globalTaupe = new Taupe(1,1);
 
-    private Taupe(final float x, final float y, final int color) {
+    private Taupe(final float x, final float y) {
         this.x = x;
         this.y = y;
-        this.color = color;
     }
 
     //getter
@@ -22,14 +20,23 @@ public class Taupe {
 
     public float getY() { return y; }
 
-    public int getColor() { return color; }
 
     public static Taupe getInstance() {
         return globalTaupe;
     }
 
     //Remplacer le monstre
+
     public void changeTaupe(int screenWidth, int screenHeight) {
+
+        float xpos = (float) ((screenWidth*Math.random()*0.7) );
+        float ypos = (float) ((screenHeight*Math.random()*0.7)  );
+
+        globalTaupe.x=xpos;
+        globalTaupe.y=ypos;
+    }
+
+/*    public void changeTaupe(int screenWidth, int screenHeight) {
 
         double k =Math.random()-Math.random();
         double u =Math.random()-Math.random();
@@ -41,13 +48,12 @@ public class Taupe {
         globalTaupe.x=xpos;
         globalTaupe.y=ypos;
         globalTaupe.color=colo;
-    }
+    }*/
 
-    public void decideTaupe(int x, int y) {
+    public void decideTaupe(float x, float y) {
 
         globalTaupe.x=x;
-        globalTaupe.y=y;
-        globalTaupe.color=1;
+        globalTaupe.y=y+120;
     }
 
 

@@ -236,11 +236,24 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
             }
             @Override
             public void onFinish() {
-                timeText.setText("FINI");
-                //isPlaying= false;
-                //playerActuel.addscore(score);
-                //wait(500);
-                //lancer jeu suivant
+                timeText.setText("FINI!");
+
+
+                GameManager.getInstance().user.addScore(score);
+                tiktakFinal = new CountDownTimer(1 * 1000,1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        GameManager.getInstance().nextGame((MainActivity) getActivity());
+                    }
+
+                };
+                tiktakFinal.start();
+
+
 
             }
         };
@@ -307,19 +320,7 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
             @Override
             public void onFinish() {
                 cyclisteImage.setVisibility(View.INVISIBLE);
-                GameManager.getInstance().user.addScore(score);
-                tiktakFinal = new CountDownTimer(2 * 1000,1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                    }
 
-                    @Override
-                    public void onFinish() {
-                        GameManager.getInstance().nextGame((MainActivity) getActivity());
-                    }
-
-                };
-                tiktakFinal.start();
 
             }
         };
