@@ -9,6 +9,9 @@ public class GameServerService extends Service {
     public GameServerService() {
     }
 
+    // This is the object that receives interactions from clients.
+    private final IBinder mBinder = new LocalBinder();
+
     public class LocalBinder extends Binder {
         GameServerService getService() {
             return GameServerService.this;
