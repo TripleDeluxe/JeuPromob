@@ -45,11 +45,14 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
     public CountDownTimer tiktak;
     public CountDownTimer tiktakFinal;
     public CountDownTimer tiktakBullet;
+    public CountDownTimer tiktakDebut;
     public CountDownTimer tiktakCycliste;
     public MediaPlayer dring2 = null;
     public MediaPlayer timeout = null;
 
     public TextView timeText;
+    public TextView goText;
+
     public ImageView boarPlayerImage;
     public ImageView bulletImage;
     public ImageView cyclisteImage;
@@ -65,6 +68,7 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
     float cyclistePos=1000;
     public int score;
     public TextView scoreText;
+    float k;
 
     /**************************************************************/
     /** Sensors Type Constant *************************************/
@@ -230,16 +234,20 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
         //mResY = (TextView) getActivity().findViewById(R.id.frag_beer_text_resY);
         timeText = getView().findViewById(R.id.timeObstacle);
 
+
+
         boarPlayerImage = getView().findViewById(R.id.imageBoarPlayer);
         boarPlayerImage.setImageResource(R.drawable.boaricon);
         //boarPlayerImage.bringToFront();
 
         bulletImage = getView().findViewById(R.id.imageBullet);
-        bulletImage.setImageResource(R.drawable.bullet);
+
         //bulletImage.bringToFront();
 
         cyclisteImage = getView().findViewById(R.id.imageCycliste);
         cyclisteImage.setImageResource(R.drawable.cycliste);
+        bulletImage = getView().findViewById(R.id.imageBullet);
+        bulletImage.setImageResource(R.drawable.bullet);
         //cyclisteImage.bringToFront();
 
         score = 0;
@@ -252,8 +260,9 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
         tiktak = new CountDownTimer(15 * 1000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                goText.setX(1000);
 
-                if(millisUntilFinished< 3000){
+                if(millisUntilFinished== 3000){
                     timeText.setTextColor(Color.parseColor("#E60000"));
                     timeText.setText("0: " + millisUntilFinished/ 1000);
                     timeout.start();
@@ -324,7 +333,7 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
             }
         };
 
-        tiktakBullet.start();
+
 
 
 
@@ -360,7 +369,35 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
             }
         };
 
-        tiktakCycliste.start();
+
+
+
+        tiktakDebut = new CountDownTimer(1 * 1000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                goText = getView().findViewById(R.id.textGOobstacle);
+                k = goText.getX();
+                goText.setX(1000);
+
+            }
+            @Override
+            public void onFinish() {
+                tiktakCycliste.start();
+                tiktakBullet.start();
+                tiktak.start();
+                goText.setX(k);
+                cyclisteImage = getView().findViewById(R.id.imageCycliste);
+                cyclisteImage.setImageResource(R.drawable.cycliste);
+                bulletImage = getView().findViewById(R.id.imageBullet);
+                bulletImage.setImageResource(R.drawable.bullet);
+
+            }
+        };
+
+        tiktakDebut.start();
+
+
+
 
 
     }

@@ -19,7 +19,7 @@ public class Scores {
         mList.add(newScore);
         Collections.sort(mList, Collections.reverseOrder());
         if(mList.size() >5)
-            {mList.remove(4);}
+            {mList.remove(5);}
     }
 
     public ArrayList<Integer> getList(){
