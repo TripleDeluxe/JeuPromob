@@ -6,6 +6,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
@@ -16,8 +17,10 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +29,7 @@ import com.iot.jeupromob.util.GameManager;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 import static com.iot.jeupromob.util.Boar.globalBoar;
+import static com.iot.jeupromob.util.Player.globalPlayer;
 
 
 public class ObstacleFragment extends Fragment implements SensorEventListener {
@@ -42,6 +46,8 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
     public CountDownTimer tiktakFinal;
     public CountDownTimer tiktakBullet;
     public CountDownTimer tiktakCycliste;
+    public MediaPlayer dring2 = null;
+    public MediaPlayer timeout = null;
 
     public TextView timeText;
     public ImageView boarPlayerImage;
@@ -50,8 +56,8 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
     public TranslateAnimation animateBullet;
     public TranslateAnimation animateCycliste;
     public TranslateAnimation animate;
-    public static int layWidth=368;
-    public static int layHeight=372;
+    public static int viewWidth=368;
+    public static int viewHeight=372;
     public float mAccelerationX = 0;
     public float mAccelerationY = 0;
     float tempAngle=10;
@@ -82,6 +88,13 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
 
     public ObstacleFragment() {
         // Required empty public constructor
+    }
+
+    public void onCreate(Bundle state) {
+
+        super.onCreate(state);
+        dring2 = MediaPlayer.create(getContext(), R.raw.bell3);
+        timeout = MediaPlayer.create(getContext(), R.raw.tictac);
     }
 
     @Override
@@ -159,21 +172,20 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
                     mAccelerationY = -event.values[0];
                     break;
             }
-            // faire quelque chose
 
-            mResX.setText("Accelerometre X : " + mAccelerationX);
-            mResY.setText("Accelerometre Y : " + mAccelerationY);
+            //mResX.setText("Accelerometre X : " + mAccelerationX);
+            //mResY.setText("Accelerometre Y : " + mAccelerationY);
 
-            float newPos = - mAccelerationX*layWidth/12;
+            float newPos = - mAccelerationX*viewWidth/12;
             float deltaAngle = tempAngle-mAccelerationX;
 
             //si l'angle ne varie qu'un peu,on ne bouge pas le boar
             if(Math.abs(deltaAngle)>0.2){
-                    animate = new TranslateAnimation(globalBoar.getX(),newPos ,0.2f*layHeight/2, 0.2f*layHeight/2);
+                    animate = new TranslateAnimation(globalBoar.getX(),newPos ,0.2f*viewHeight/2, 0.2f*viewHeight/2);
                     animate.setDuration(200);
                     animate.setFillAfter(true);
                     boarPlayerImage.startAnimation(animate);
-                    globalBoar.decideBoar(newPos,0.2f*layHeight/2);
+                    globalBoar.decideBoar(newPos,0.2f*viewHeight/2);
                     tempAngle=mAccelerationX;
 
             }
@@ -190,9 +202,32 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
     @Override
     public void onStart(){
         super.onStart();
+
+        ViewTreeObserver viewTreeObserver = getView().getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    viewHeight = getView().getHeight();
+                    viewWidth = getView().getWidth();
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
         // UI
-        mResX = (TextView) getActivity().findViewById(R.id.frag_beer_text_resX);
-        mResY = (TextView) getActivity().findViewById(R.id.frag_beer_text_resY);
+        //mResX = (TextView) getActivity().findViewById(R.id.frag_beer_text_resX);
+        //mResY = (TextView) getActivity().findViewById(R.id.frag_beer_text_resY);
         timeText = getView().findViewById(R.id.timeObstacle);
 
         boarPlayerImage = getView().findViewById(R.id.imageBoarPlayer);
@@ -212,8 +247,6 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
 
 
 
-
-
         //TIMER
 
         tiktak = new CountDownTimer(15 * 1000,1000) {
@@ -223,6 +256,7 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
                 if(millisUntilFinished< 3000){
                     timeText.setTextColor(Color.parseColor("#E60000"));
                     timeText.setText("0: " + millisUntilFinished/ 1000);
+                    timeout.start();
 
                 }
                 else{
@@ -230,7 +264,7 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
                     timeText.setText("0: " + millisUntilFinished/ 1000);
                 }
 
-                // newPos = ((int)(layWidth/2 -mAccelerationX*layWidth/2))/10;
+                // newPos = ((int)(viewWidth/2 -mAccelerationX*viewWidth/2))/10;
 
 
             }
@@ -239,7 +273,7 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
                 timeText.setText("FINI!");
 
 
-                GameManager.getInstance().user.addScore(score);
+                globalPlayer.addScore(score);
                 tiktakFinal = new CountDownTimer(1 * 1000,1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
@@ -263,7 +297,7 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
 
 
 
-        tiktakBullet = new CountDownTimer(15 * 1000,620) {
+        tiktakBullet = new CountDownTimer(15 * 1000,710) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -276,9 +310,9 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
                     scoreText.setText(Integer.toString(score));
                     scoreText.setTextColor(Color.parseColor("#E60000"));
                 }
-                bulletPos = (float) (Math.random()*layWidth - Math.random()*layWidth);
-                animateBullet = new TranslateAnimation(bulletPos,bulletPos ,-layHeight*1.8f, 0.2f*layHeight/2);
-                animateBullet.setDuration(630);
+                bulletPos = (float) (Math.random()*viewWidth - Math.random()*viewWidth);
+                animateBullet = new TranslateAnimation(bulletPos,bulletPos ,-viewHeight, 0.2f*viewHeight/2);
+                animateBullet.setDuration(720);
                 animateBullet.setFillAfter(true);
                 bulletImage.startAnimation(animateBullet);
 
@@ -305,12 +339,13 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
                 if(compPos<35){
                     ((Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE)).vibrate(100);
                     score++;
+                    dring2.start();
                     scoreText.setText(Integer.toString(score));
                     scoreText.setTextColor(Color.parseColor("#669900"));
 
                 }
-                cyclistePos = (float) (Math.random()*layWidth - Math.random()*layWidth);
-                animateCycliste = new TranslateAnimation(cyclistePos,cyclistePos ,-layHeight*1.8f, 0.2f*layHeight/2);
+                cyclistePos = (float) (Math.random()*viewWidth - Math.random()*viewWidth)*0.6f;
+                animateCycliste = new TranslateAnimation(cyclistePos,cyclistePos ,-viewHeight, 0.2f*viewHeight/2);
                 animateCycliste.setDuration(1200);
                 animateCycliste.setFillAfter(true);
                 cyclisteImage.startAnimation(animateCycliste);

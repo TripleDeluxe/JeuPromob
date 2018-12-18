@@ -18,6 +18,8 @@ import com.iot.jeupromob.activity.TrainingFragment;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.iot.jeupromob.util.Player.globalPlayer;
+
 public class GameManager {
     private Fragment[] gamesFragment = null;
     private static final int NB_GAMES_TO_PLAY = 3;
@@ -26,7 +28,6 @@ public class GameManager {
     private ArrayList<Fragment> gamesOrder = null;
     private String mCurrentMode = "";
 
-    public Player user = new Player("");
 
     //Singleton ==> Une seule instance de cette classe, on ne peut pas en créer de nouveaux (constructeur privé)
     private static GameManager instance = new GameManager();
@@ -41,6 +42,7 @@ public class GameManager {
 
     //Lance le 1er mini jeu (pour commencer depuis mainActivity) et initialisation des variables
     public void startSoloGame(MainActivity mainActivity){
+        globalPlayer.resetScore();
         mCurrentMode = "solo";
 
         //On créer l'Array avec des nouveaux Fragments, on la mélange et on lance le 1er mini-jeu

@@ -2,6 +2,7 @@ package com.iot.jeupromob.activity;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.iot.jeupromob.util.GameManager;
 import com.iot.jeupromob.R;
@@ -20,6 +22,8 @@ public class GameMenuFragment extends Fragment {
     private Button mPlaySoloButton = null;
     private Button mPlayMultiButton = null;
     private Button mPlayTrainingButton = null;
+    private ImageView frontPic;
+
 
     public GameMenuFragment() {
         // Required empty public constructor
@@ -28,6 +32,7 @@ public class GameMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false);
     }
@@ -36,6 +41,8 @@ public class GameMenuFragment extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
+
+
 
         //On récupère les boutons de l'UI
         mPlaySoloButton = getActivity().findViewById(R.id.fragment_menu_button_play_solo);

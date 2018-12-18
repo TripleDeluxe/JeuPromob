@@ -33,6 +33,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.iot.jeupromob.util.Player.globalPlayer;
+
 public class MultiplayerMenuFragment extends Fragment {
 
     /**************************************************************/
@@ -246,7 +248,7 @@ public class MultiplayerMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String userName = mTextInputName.getText().toString();
-                GameManager.getInstance().user.name = userName;
+                globalPlayer.name = userName;
                 mTextViewName.setText("Pseudonyme : " + mTextInputName.getText().toString());
                 mTextInputName.setText("");
             }

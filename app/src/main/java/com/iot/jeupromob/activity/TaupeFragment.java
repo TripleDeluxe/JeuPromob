@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.os.Vibrator;
+import static com.iot.jeupromob.util.Player.globalPlayer;
 
 
 import com.iot.jeupromob.R;
@@ -54,6 +55,8 @@ public class TaupeFragment extends Fragment {
     public float bandeHaute;
     public float bandeCote;
     public MediaPlayer dring = null;
+    public MediaPlayer timeout = null;
+
     float xpos;
     float ypos;
     float viewHeight;
@@ -130,12 +133,13 @@ public class TaupeFragment extends Fragment {
                         taupeImage.startAnimation(animate);
                         score++;
                         scoreText.setText(Integer.toString(score));
-                        dring.start();
+                        ((Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE)).vibrate(50);
                     }
                     else{
                         score-=5;
+                        dring.start();
                         scoreText.setText(Integer.toString(score));
-                        ((Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE)).vibrate(150);
+                        ((Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE)).vibrate(350);
                     }
 
 
@@ -151,7 +155,8 @@ public class TaupeFragment extends Fragment {
     public void onCreate(Bundle state) {
 
         super.onCreate(state);
-        dring = MediaPlayer.create(getContext(), R.raw.bell);
+        dring = MediaPlayer.create(getContext(), R.raw.bell4);
+        timeout = MediaPlayer.create(getContext(), R.raw.tictac);
     }
 
 
@@ -217,15 +222,6 @@ public class TaupeFragment extends Fragment {
 
                     score = 0;
 
-                    Button taupeRetour = getActivity().findViewById(R.id.frag_Taupe_ret_button);
-                    taupeRetour.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new TrainingFragment()).commit();
-                        }
-                    });
-
-
                     xpos = viewWidth/2 ;
                     ypos = viewHeight/2 ;
                     animate2 = new TranslateAnimation(0, 0,0, 0);
@@ -255,6 +251,7 @@ public class TaupeFragment extends Fragment {
 
                             if(millisUntilFinished< 3000){
                                 timeText.setTextColor(Color.parseColor("#E60000"));
+                                timeout.start();
 
                                 timeText.setText("" + millisUntilFinished/ 1000 +":" + (millisUntilFinished/ 10 - (millisUntilFinished/ 1000)*100));
                             }
@@ -268,7 +265,7 @@ public class TaupeFragment extends Fragment {
                             timeText.setText("FINI!");
 
 
-                            GameManager.getInstance().user.addScore(score);
+                            globalPlayer.addScore(score);
                             tiktakFinal = new CountDownTimer(1 * 1000,1000) {
                                 @Override
                                 public void onTick(long millisUntilFinished) {
@@ -294,10 +291,6 @@ public class TaupeFragment extends Fragment {
 
 
     }
-
-
-
-
 
 
 

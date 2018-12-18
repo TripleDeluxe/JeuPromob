@@ -20,13 +20,14 @@
         android:fontFamily="sans-serif-condensed"
         android:text="Mangez les cyclistes qui fuient!"
         android:textColor="@color/colorAccent"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.016" />
+        app:layout_constraintVertical_bias="0.021" />
 
     <TextView
         android:id="@+id/frag_beer_text_resX"
@@ -161,7 +162,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-
 
 
 </android.support.constraint.ConstraintLayout>
