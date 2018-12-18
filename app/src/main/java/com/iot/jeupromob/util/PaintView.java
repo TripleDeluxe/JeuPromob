@@ -47,8 +47,6 @@ public class PaintView extends View {
     private int minimumSize;
     private int maximumSize;
     private Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-    //Dit si la forme à dessiner a été dessiner
-    private boolean mIsShapeDrawed = false;
     private Path mShapeToDraw = new Path();
     private ArrayList<Point> mShapeCoordinates = new ArrayList<>();
     private ArrayList<Point> mUserCoordinates = new ArrayList<>();
@@ -56,6 +54,8 @@ public class PaintView extends View {
     private int mObjectiveIndex = 0;
     private boolean isObjectiveReached = false;
     private boolean mIsRoundFinish = false;
+    private boolean mIsShapeDrawed = false;
+
 
     private MediaPlayer soundBadAnswer = null;
     private MediaPlayer soundGoodAnswer = null;
@@ -254,8 +254,12 @@ public class PaintView extends View {
 
         if(randomShape == "square"){
             drawSquare();
+            Log.d("cccccc", "square");
+            mIsShapeDrawed = true;
         }else if(randomShape == "triangle"){
             drawTriangle();
+            Log.d("cccccc", "triangle");
+            mIsShapeDrawed = true;
         }
     }
 
@@ -280,7 +284,7 @@ public class PaintView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(!mIsRoundFinish){
+        if(!mIsRoundFinish && mIsShapeDrawed){
             canvas.save();
             mCanvas.drawColor(M_BACKGROUND_COLOR);
             mPaint.setStrokeWidth(M_BRUSH_SIZE);
@@ -289,11 +293,13 @@ public class PaintView extends View {
             mPaint.setColor(M_SHAPE_COLOR);
             mCanvas.drawPath(mShapeToDraw, mPaint);
 
-            Path mObjective = new Path();
-            //mObjective.moveTo();
-            mObjective.addCircle(mShapeObjectives.get(mObjectiveIndex).x, mShapeObjectives.get(mObjectiveIndex).y, M_OBJECTIVE_RADIUS, Path.Direction.CW);
-            mPaint.setColor(M_OBJECTIVE_COLOR);
-            mCanvas.drawPath(mObjective, mPaint);
+            if(mIsShapeDrawed){
+                Path mObjective = new Path();
+                mObjective.addCircle(mShapeObjectives.get(mObjectiveIndex).x, mShapeObjectives.get(mObjectiveIndex).y, M_OBJECTIVE_RADIUS, Path.Direction.CW);
+                mPaint.setColor(M_OBJECTIVE_COLOR);
+                mCanvas.drawPath(mObjective, mPaint);
+            }
+
 
             for (FingerPath fp : mFingerPaths) {
                 mPaint.setColor(fp.color);
@@ -306,7 +312,7 @@ public class PaintView extends View {
     }
 
     private void touchStart(float x, float y) {
-        if(!mIsRoundFinish){
+        if(!mIsRoundFinish && mIsShapeDrawed){
             if(mFingerPaths.size() > 1){
                 clearUser();
             }
@@ -328,7 +334,7 @@ public class PaintView extends View {
     }
 
     private void touchMove(float x, float y) {
-        if(!mIsRoundFinish){
+        if(!mIsRoundFinish && mIsShapeDrawed){
             checkIfObjectiveReached(x, y);
 
             if(isObjectiveReached){

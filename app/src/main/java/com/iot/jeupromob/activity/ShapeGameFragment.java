@@ -23,8 +23,7 @@ import java.util.ArrayList;
 public class ShapeGameFragment extends Fragment {
     private PaintView mPaintView;
     private int mNumberRound = 2;
-    //Initialisée a -1 car chaque appel à checkResult() incrémente cette variable
-    private int mCurrentRoundIndex = 0;
+    private int mCurrentRoundIndex = -1;
 
 
     public ShapeGameFragment() {
@@ -57,6 +56,7 @@ public class ShapeGameFragment extends Fragment {
                 @Override
                 public void onGlobalLayout() {
                     mPaintView.init(temp);
+                    nextRound();
                 }
             });
         }
