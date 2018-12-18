@@ -236,7 +236,6 @@ public class PaintView extends View {
         mUserCoordinates.clear();
         mObjectiveIndex = 0;
         invalidate();
-
     }
 
     public void initRound(){
@@ -246,7 +245,6 @@ public class PaintView extends View {
         mUserCoordinates.clear();
         mIsRoundFinish = false;
         drawRandomShape();
-        invalidate();
     }
 
     private void drawRandomShape(){
@@ -284,8 +282,10 @@ public class PaintView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.save();
         if(!mIsRoundFinish && mIsShapeDrawed){
-            canvas.save();
+            Log.d("vvvvv", "draw");
+
             mCanvas.drawColor(M_BACKGROUND_COLOR);
             mPaint.setStrokeWidth(M_BRUSH_SIZE);
             mPaint.setMaskFilter(null);
@@ -307,8 +307,9 @@ public class PaintView extends View {
             }
 
             canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-            canvas.restore();
+
         }
+        canvas.restore();
     }
 
     private void touchStart(float x, float y) {

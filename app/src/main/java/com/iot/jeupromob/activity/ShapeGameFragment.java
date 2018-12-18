@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class ShapeGameFragment extends Fragment {
     private PaintView mPaintView;
-    private int mNumberRound = 2;
+    private int mNumberRound = 1;
     private int mCurrentRoundIndex = -1;
 
 
@@ -55,7 +55,7 @@ public class ShapeGameFragment extends Fragment {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    mPaintView.init(temp);
+                    //mPaintView.init(temp);
                     nextRound();
                 }
             });
@@ -65,10 +65,11 @@ public class ShapeGameFragment extends Fragment {
 
     public void nextRound(){
         mCurrentRoundIndex++;
-
+        Log.d("mmmm", "nextround");
         if(mCurrentRoundIndex == mNumberRound){
             GameManager.getInstance().nextGame((MainActivity) getActivity());
         }else{
+            mPaintView.init(this);
             mPaintView.initRound();
         }
     }

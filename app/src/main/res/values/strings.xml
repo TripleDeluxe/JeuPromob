@@ -2,7 +2,7 @@
     <!--Titres-->
     <string name="app_name">JeuPromob</string>
     <string name="title_petit_bac">Petit bac</string>
-    <string name="title_question_game">Répondez vite</string>
+    <string name="title_question_game">Quizz</string>
     <string name="title_beer_game">Servez bien la bière</string>
     <string name="title_shape_game">Dessinez la forme</string>
     <string name="title_training">Entraînement</string>
