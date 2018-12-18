@@ -41,7 +41,6 @@ public class TaupeFragment extends Fragment {
     /** score et timer*/
     public CountDownTimer tiktak;
     public CountDownTimer tiktakFinal;
-    public CountDownTimer tiktakDebut;
     public TextView timeText;
     public static int score = 0;
     public TextView scoreText;
@@ -57,7 +56,6 @@ public class TaupeFragment extends Fragment {
     public float bandeCote;
     public MediaPlayer dring = null;
     public MediaPlayer timeout = null;
-    public TextView goText;
 
     float xpos;
     float ypos;
@@ -205,10 +203,6 @@ public class TaupeFragment extends Fragment {
                     bandeHaute = screenHeight - viewHeight;
                     bandeCote = (screenWidth-layWidth)/2;
 
-                    goText = getView().findViewById(R.id.textGOTaupe);
-                    final float k = goText.getX();
-                    goText.setX(1000);
-
 
 
                     Log.d("wwwww","" + layWidth + "height " + layHeight);
@@ -289,31 +283,7 @@ public class TaupeFragment extends Fragment {
                         }
                     };
 
-
-                    tiktakDebut = new CountDownTimer(2 * 1000,1000) {
-                        @Override
-                        public void onTick(long millisUntilFinished) {
-                            isPlaying= false;
-                            if(millisUntilFinished==1000) {
-                                goText.setX(k);
-                                tiktak.start();
-                            }
-
-                        }
-                        @Override
-                        public void onFinish() {
-                            isPlaying= true;
-
-                            goText.setX(1000);
-                        }
-
-                        };
-
-                    tiktakDebut.start();
-
-
-
-
+                    tiktak.start();
                 }
             });
         }
@@ -323,4 +293,10 @@ public class TaupeFragment extends Fragment {
     }
 
 
+
+
+
 }
+
+
+
