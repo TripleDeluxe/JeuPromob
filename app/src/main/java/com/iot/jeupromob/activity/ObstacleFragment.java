@@ -336,7 +336,7 @@ public class ObstacleFragment extends Fragment implements SensorEventListener {
 
 
                 scoreText.setTextColor(Color.parseColor("#000000"));
-                if(compPos<35){
+                if(compPos<39){
                     ((Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE)).vibrate(100);
                     score++;
                     dring2.start();
